@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,16 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //route untuk admin
 Route::group(['middleware' => 'role:admin'], function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index']);
+    Route::get('/admin/manage-user', [AdminController::class, 'list_user']);
+    Route::get('/admin/manage-user/add', function(){
+        return view('admin.add-user', ['menu' => 'datauser']);
+    });
+    Route::post('/admin/manage-user/add', [AdminController::class, 'add_user']);
+    Route::delete('/admin/manage-user/delete/{id}', [AdminController::class, 'delete_user']);
+    Route::put('/admin/manage-user/edit/{id}', [AdminController::class, 'update_user']);
 
+    Route::get('/logout-admin', [AuthController::class, 'logout']);
 });
 
 //routes untuk pegawai
@@ -52,5 +62,5 @@ Route::group(['middleware' => 'role:pelanggan'], function () {
         return view('pelanggan.index');
     });
 
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/logout-pelanggan', [AuthController::class, 'logout']);
 });
