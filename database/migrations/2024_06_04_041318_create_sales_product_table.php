@@ -17,9 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->integer('jumlah');
             $table->unsignedBigInteger('total');
-            $table->enum('status_pesanan', ['Proses Penanaman', 'Siap Kirim', 'Dikirim']);
-            $table->text('alamat_pengiriman');
+            $table->enum('status_pesanan', ['Pending', 'Proses Penanaman', 'Siap Kirim / Siap Diambil', 'Dikirim / Diambil']);
             $table->date('tanggal_penanaman')->nullable();
+            $table->text('alamat_pengiriman')->default('Ambil Ditempat');
+            $table->unsignedBigInteger('ongkir')->nullable();
+            $table->unsignedBigInteger('total_keseluruhan')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

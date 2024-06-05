@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\PelangganController;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 //routes sebelum autentikasi
 Route::get('/', function(){
-    return view('welcome', ['menu' => 'home']);
+    $best_product = Product::where('display', 'Tampilkan')->withSum('SalesProduct', 'jumlah')
+            ->orderBy('sales_product_sum_jumlah', 'desc')
+            ->take(4)
+            ->get();
+    return view('welcome', ['menu' => 'home', 'best_produk' => $best_product]);
 });
 Route::get('/about-us', function(){
     return view('about-us', ['menu' => 'tentang-kami']);
@@ -58,6 +64,13 @@ Route::group(['middleware' => 'role:pegawai'], function () {
     });
     Route::post('/pegawai/product/add', [PegawaiController::class, 'store']);
     Route::put('/pegawai/product/update/{id}', [PegawaiController::class, 'update']);
+    Route::get('/pegawai/pesanan', [PegawaiController::class, 'pesanan']);
+    Route::get('/pegawai/detail-pesanan/{id}', [PegawaiController::class, 'detail_pesanan']);
+
+    Route::put('/pegawai/update-status-pesanan/tanam-bibit/{id}', [PegawaiController::class, 'update_status_tanam_bibit']);
+    Route::put('/pegawai/update-status-pesanan/siap-kirim/{id}', [PegawaiController::class, 'update_status_siap_kirim']);
+    Route::put('/pegawai/update-status-pesanan/dikirim/{id}', [PegawaiController::class, 'update_status_dikirim']);
+
     Route::get('/logout-pegawai', [AuthController::class, 'logout']);
 });
 
@@ -68,9 +81,12 @@ Route::group(['middleware' => 'role:pemilik'], function () {
 
 //routes untuk pelanggan
 Route::group(['middleware' => 'role:pelanggan'], function () {
-    Route::get('/pelanggan', function(){
-        return view('pelanggan.index');
-    });
+    Route::get('/pelanggan', [PelangganController::class, 'index']);
+    Route::get('/pelanggan/order', [PelangganController::class, 'order']);
+    Route::get('/pelanggan/order/{id}', [PelangganController::class, 'detail_product']);
+    Route::post('/pelanggan/order', [PelangganController::class, 'store_order']);
+
+    Route::get('/pelanggan/pesanan', [PelangganController::class, 'pesanan_index']);
 
     Route::get('/logout-pelanggan', [AuthController::class, 'logout']);
 });

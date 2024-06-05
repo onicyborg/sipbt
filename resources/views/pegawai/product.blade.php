@@ -60,8 +60,8 @@
                                             class="img-thumbnail" style="width: 100px; height: auto;">
                                     </td>
                                     <td>
-                                        @if ($item->salesProducts != null)
-                                            {{ $item->salesProducts->sum('jumlah') }}
+                                        @if ($item->SalesProduct != null)
+                                            {{ $item->SalesProduct->sum('jumlah') }}
                                         @else
                                             0
                                         @endif

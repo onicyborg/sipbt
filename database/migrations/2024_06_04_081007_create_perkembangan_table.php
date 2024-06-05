@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sales_product_id');
             $table->text('image');
+            $table->integer('umur');
             $table->integer('tinggi');
             $table->string('keterangan');
             $table->timestamps();

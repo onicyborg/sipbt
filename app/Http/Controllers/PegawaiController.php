@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\SalesProduct;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -127,5 +128,41 @@ class PegawaiController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil diperbarui');
     }
 
+    public function pesanan()
+    {
+        $order = SalesProduct::orderBy('created_at', 'desc')->get();
 
+        return view('pegawai.pesanan', ['menu' => 'pesanan', 'order' => $order]);
+    }
+
+    public function detail_pesanan($id)
+    {
+        $order = SalesProduct::find($id);
+
+        return view('pegawai.detail-pesanan', ['menu' => 'pesanan', 'order' => $order]);
+    }
+
+    public function update_status_tanam_bibit($id)
+    {
+        $order = SalesProduct::find($id);
+        $order->status_pesanan = 'Proses Penanaman';
+        $order->save();
+        return redirect()->back()->with('success', 'Status Pesanan Diubah');
+    }
+
+    public function update_status_siap_kirim($id)
+    {
+        $order = SalesProduct::find($id);
+        $order->status_pesanan = 'Siap Kirim / Siap Diambil';
+        $order->save();
+        return redirect()->back()->with('success', 'Status Pesanan Diubah');
+    }
+
+    public function update_status_dikirim($id)
+    {
+        $order = SalesProduct::find($id);
+        $order->status_pesanan = 'Dikirim / Diambil';
+        $order->save();
+        return redirect()->back()->with('success', 'Status Pesanan Diubah');
+    }
 }

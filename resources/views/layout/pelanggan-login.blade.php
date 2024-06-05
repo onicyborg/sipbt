@@ -1,151 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Republik Bibit</title>
-
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
-    <link href="{{ asset('assetss/css/style.css') }}" rel="stylesheet">
-
-    <!-- SPECIFIC CSS -->
-    <link href="{{ asset('assetss/css/home_1.css') }}" rel="stylesheet">
-
-    <!-- YOUR CUSTOM CSS -->
-    <link href="{{ asset('assetss/css/custom.css') }}" rel="stylesheet">
-
-    <link href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/assets/fontawesome/css/all.min.css') }}" rel="stylesheet" />
-
-    @stack('styles')
-</head>
-
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/pelanggan">Republik Bibit</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
-                <!-- ml-auto still works just fine-->
-                <div class="navbar-nav ml-auto">
-                    <div class="">
-                        <a class="btn btn-secondary mr-2" href="">
-                            <i class="fa fa-bell" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user" aria-hidden="true"></i> {{ Auth::user()->name }}
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="">Profil</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout-pelanggan">Logout</a></li>
-                        </ul>
-                    </div>
-
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Republik Bibit adalah platform mempermudah pembelian bibit yang berkualitas sehingga dapat menghasilkan panen yang berlimpah" />
+        <meta name="author" content="Republik Bibit" />
+        <title>Pemilik Republik Bibit</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="{{ asset('admin/css/styles.css') }}" rel="stylesheet" />
+        <link href="{{ asset('admin/assets/fontawesome/css/all.min.css') }}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.4/css/dataTables.dataTables.min.css">
+        @stack('styles')
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="/pelanggan">Republik Bibit</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> -->
                 </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/logout-pelanggan">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">Pelanggan</div>
+                            <a class="nav-link <?php if($menu == 'home'){ echo 'active'; } ?>" href="/pelanggan">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-gauge"></i></div>
+                                Home
+                            </a>
+                            <a class="nav-link <?php if($menu == 'order'){ echo 'active'; } ?>" href="/pelanggan/order">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-stacked"></i></i></div>
+                                Order Bibit
+                            </a>
+                            <a class="nav-link <?php if($menu == 'pesanan'){ echo 'active'; } ?>" href="/pelanggan/pesanan">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></i></div>
+                                Pesanan Anda
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        {{ Auth::user()->nama }}
+                    </div>
+                </nav>
             </div>
-        </div>
-    </nav>
-
-    @yield('content')
-
-
-    <footer class="navbar-dark bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_1">Menu</h3>
-                    <div class="collapse dont-collapse-sm links" id="collapse_1">
-                        <ul>
-                            <li><a href="about.html">Tentang Kami</a></li>
-                            <li><a href="/registrasi">Registrasi</a></li>
-                            <li><a href="help.html">Login</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_2">Kategori</h3>
-                    <div class="collapse dont-collapse-sm links" id="collapse_2">
-                        <ul>
-                            <li><a href="listing-grid-1-full.html">Melon</a></li>
-                            <li><a href="listing-grid-2-full.html">Semangka</a></li>
-                            <li><a href="listing-grid-1-full.html">Timun</a></li>
-                            <li><a href="listing-grid-3.html">Terong</a></li>
-                            <li><a href="listing-grid-1-full.html">Cabai</a></li>
-                            <li><a href="listing-grid-1-full.html">Brokoli</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_3">Kontak</h3>
-                    <div class="collapse dont-collapse-sm contacts" id="collapse_3">
-                        <ul>
-                            <li><i class="ti-home"></i>Alvia<br>Kertosono - Jawa Timur</li>
-                            <li><i class="ti-headphone-alt"></i>+62 812-1614-6400</li>
-                            <li><i class="ti-email"></i><a href="#0">republikbibit@alvia.com</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_4"></h3>
-                    <div class="collapse dont-collapse-sm" id="collapse_4">
-                        <div id="newsletter">
-                            <div class="form-group">
-
+            <div id="layoutSidenav_content">
+                <main>
+                    @yield('content')
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Republik Bibit 2024</div>
+                            <div>
+                                <a href="#"></a>
+                                &middot;
+                                <a href="#"></a>
                             </div>
                         </div>
-                        <div class="follow_us">
-                            <h5>Follow Kami</h5>
-                            <ul>
-                                <li><a href="#0"><i class="bi bi-facebook"></i></a></li>
-                                <li><a href="#0"><i class="bi bi-twitter-x"></i></a></li>
-                                <li><a href="#0"><i class="bi bi-instagram"></i></a></li>
-                                <li><a href="#0"><i class="bi bi-tiktok"></i></a></li>
-                                <li><a href="#0"><i class="bi bi-whatsapp"></i></a></li>
-                            </ul>
-                        </div>
                     </div>
-                </div>
-            </div>
-            <!-- /row-->
-            <hr>
-            <div class="row add_bottom_25">
-                <div class="col-lg-6">
-                    <ul class="footer-selector clearfix">
-                    </ul>
-                </div>
-                <div class="col-lg-6">
-                    <ul class="additional_links">
-                        <li><span>© 2024 Republik Bibit</span></li>
-                    </ul>
-                </div>
+                </footer>
             </div>
         </div>
-    </footer>
-    <!--/footer-->
-
-    <!--bootstrap 5 -->
-    <!-- JavaScript and dependencies -->
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
-    <!-- COMMON SCRIPTS -->
-    <script src="{{ asset('assetss/js/common_scripts.min.js') }}"></script>
-    <script src="{{ asset('assetss/js/main.js') }}"></script>
-
-    <!-- SPECIFIC SCRIPTS -->
-    <script src="{{ asset('assetss/js/carousel-home.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-
-    <!-- SPECIFIC SCRIPTS -->
-    <script  src="{{ asset('assetss/js/carousel_with_thumbs.js') }}"></script>
-
-    @stack('scripts')
-</body>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.datatables.net/2.0.4/js/dataTables.min.js"></script>
+        <script src="{{ asset('/admin/js/scripts.js') }}"></script>
+        @stack('scripts')
+    </body>
 </html>

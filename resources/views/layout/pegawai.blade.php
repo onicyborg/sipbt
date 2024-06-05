@@ -60,10 +60,6 @@
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-column"></i></div>
                                 Monitoring Bibit
                             </a>
-                            <a class="nav-link <?php if($menu == 'stokbibit'){ echo 'active'; } ?>" href="<?= url('/') ?>/pegawai/stokbibit">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-packing"></i></div>
-                                Stok
-                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

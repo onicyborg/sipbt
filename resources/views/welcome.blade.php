@@ -41,112 +41,44 @@
                     <p>Bibit Terlaris dan Kualitas Terbaik</p>
                 </div>
                 <div class="row small-gutters">
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="grid_item">
-                            <figure>
-                                <span class="ribbon off">-30%</span>
-                                <a href="product-detail-1.html">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/1.png') }}"
-                                        data-src="{{ asset('assetss/imggg/1.png') }}" alt="" data-was-processed="true">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/1.png') }}"
-                                        data-src="{{ asset('assetss/imggg/1.png') }}" alt="" data-was-processed="true">
+                    @foreach ($best_produk as $key)
+                        <div class="col-6 col-md-4 col-xl-3">
+                            <div class="grid_item">
+                                <figure>
+                                    @if ($key->jenis_pesanan == 'ready')
+                                        <span class="ribbon hot">Ready</span>
+                                    @else
+                                        <span class="ribbon off">Pre-Order</span>
+                                    @endif
+                                    <a href="/login">
+                                        <img class="img-fluid lazy loaded" src="{{ asset('storage/images/' . $key->image) }}"
+                                            data-src="{{ asset('storage/images/' . $key->image) }}" alt=""
+                                            data-was-processed="true">
+                                        <img class="img-fluid lazy loaded"
+                                            src="{{ asset('storage/images/' . $key->image) }}"
+                                            data-src="{{ asset('storage/images/' . $key->image) }}" alt=""
+                                            data-was-processed="true">
+                                    </a>
+                                </figure>
+                                <div class="rating">
+                                    <i class="icon-star voted"></i>
+                                    <i class="icon-star voted"></i>
+                                    <i class="icon-star voted"></i>
+                                    <i class="icon-star voted"></i>
+                                    <i class="icon-star voted"></i>
+                                </div>
+                                <a href="/login">
+                                    <h3>{{ $key->nama }}</h3>
                                 </a>
-                                <div data-countdown="2024/04/10" class="countdown">00D 00:00:00</div>
-                            </figure>
-                            <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i></div>
-                            <a href="product-detail-1.html">
-                                <h3>Melon Pertiwi</h3>
-                            </a>
-                            <div class="price_box">
-                                <span class="new_price">Rp 50.000</span>
-                                <span class="old_price">Rp 120.000</span>
+                                <div class="price_box">
+                                    <span class="new_price">Rp
+                                        {{ number_format($key->harga, 0, ',', '.') }}</span>
+                                </div>
+                                <ul>
+                                </ul>
                             </div>
-                            <ul>
-                            </ul>
                         </div>
-                        <!-- /grid_item -->
-                    </div>
-                    <!-- /col -->
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="grid_item">
-                            <span class="ribbon hot">Hot</span>
-                            <figure>
-                                <a href="product-detail-1.html">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/2.jpg') }}"
-                                        data-src="{{ asset('assetss/imggg/2.jpg') }}" alt="" data-was-processed="true">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/2.jpg') }}"
-                                        data-src="{{ asset('assetss/imggg/2.jpg') }}" alt="" data-was-processed="true">
-                                </a>
-                            </figure>
-                            <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i></div>
-                            <a href="product-detail-1.html">
-                                <h3>Terong Bintang Asia</h3>
-                            </a>
-                            <div class="price_box">
-                                <span class="new_price">Rp 25.000</span>
-                            </div>
-                            <ul>
-                            </ul>
-                        </div>
-                        <!-- /grid_item -->
-                    </div>
-                    <!-- /col -->
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="grid_item">
-                            <span class="ribbon hot">Hot</span>
-                            <figure>
-                                <a href="product-detail-1.html">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/3.jpg') }}"
-                                        data-src="{{ asset('assetss/imggg/3.jpg') }}" alt="" data-was-processed="true">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/3.jpg') }}"
-                                        data-src="{{ asset('assetss/imggg/3.jpg') }}" alt="" data-was-processed="true">
-                                </a>
-                            </figure>
-                            <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i></div>
-                            <a href="product-detail-1.html">
-                                <h3>Cabe Rawit Pelita F1</h3>
-                            </a>
-                            <div class="price_box">
-                                <span class="new_price">Rp 10.000</span>
-                            </div>
-                            <ul>
-                            </ul>
-                        </div>
-                        <!-- /grid_item -->
-                    </div>
-                    <!-- /col -->
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="grid_item">
-                            <span class="ribbon hot">Hot</span>
-                            <figure>
-                                <a href="product-detail-1.html">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/4.jpg') }}"
-                                        data-src="{{ asset('assetss/imggg/4.jpg') }}" alt="" data-was-processed="true">
-                                    <img class="img-fluid lazy loaded" src="{{ asset('assetss/imggg/4.jpg') }}"
-                                        data-src="{{ asset('assetss/imggg/4.jpg') }}" alt="" data-was-processed="true">
-                                </a>
-                            </figure>
-                            <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i><i class="icon-star voted"></i><i
-                                    class="icon-star voted"></i></div>
-                            <a href="product-detail-1.html">
-                                <h3>Semangka Bintang Asia</h3>
-                            </a>
-                            <div class="price_box">
-                                <span class="new_price">Rp 10.000</span>
-                            </div>
-                            <ul>
-                            </ul>
-                        </div>
-                        <!-- /grid_item -->
-                    </div>
-                    <!-- /col -->
+                    @endforeach
                 </div>
                 <!-- /row -->
             </div>
