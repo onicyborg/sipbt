@@ -38,6 +38,10 @@ php artisan key:generate
 ```bash
 php artisan migrate
 ```
+- ketik yes saja jika ada konfirmasi untuk pembuatan database
+```bash
+php artisan db:seed DataUsers
+```
 
 - lalu ketik perintah
 
