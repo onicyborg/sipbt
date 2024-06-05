@@ -54,7 +54,7 @@ class AuthController extends Controller
                 case 'admin':
                     return redirect('/admin/dashboard');
                 case 'pegawai':
-                    // return redirect()->route('pegawai.dashboard');
+                    return redirect('/pegawai/dashboard');
                 case 'pelanggan':
                     return redirect('/pelanggan');
                 default:

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Republik Bibit adalah platform mempermudah pembelian bibit yang berkualitas sehingga dapat menghasilkan panen yang berlimpah" />
         <meta name="author" content="Republik Bibit" />
-        <title>Admin Republik Bibit</title>
+        <title>Pemilik Republik Bibit</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ asset('admin/css/styles.css') }}" rel="stylesheet" />
         <link href="{{ asset('admin/assets/fontawesome/css/all.min.css') }}" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="/">Republik Bibit</a>
+            <a class="navbar-brand ps-3" href="/pegawai/dashboard">Republik Bibit</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -33,7 +33,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Pengaturan</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="/logout-admin">Logout</a></li>
+                        <li><a class="dropdown-item" href="/logout-pegawai">Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -43,14 +43,26 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Admin</div>
-                            <a class="nav-link <?php if($menu == 'dashboard'){ echo 'active'; } ?>" href="/admin/dashboard">
+                            <div class="sb-sidenav-menu-heading">Pegawai</div>
+                            <a class="nav-link <?php if($menu == 'dashboard'){ echo 'active'; } ?>" href="/pegawai/dashboard">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-gauge"></i></div>
                                 Dashboard
                             </a>
-                            <a class="nav-link <?php if($menu == 'datauser'){ echo 'active'; } ?>" href="/admin/manage-user">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user-group"></i></div>
-                                Data User
+                            <a class="nav-link <?php if($menu == 'produkbibit'){ echo 'active'; } ?>" href="/pegawai/product">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-stacked"></i></i></div>
+                                Produk Bibit
+                            </a>
+                            <a class="nav-link <?php if($menu == 'pesanan'){ echo 'active'; } ?>" href="<?= url('/') ?>/pegawai/pesanan">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></i></div>
+                                Pesanan
+                            </a>
+                            <a class="nav-link <?php if($menu == 'monitoringbibit'){ echo 'active'; } ?>" href="<?= url('/') ?>/pegawai/monitoringbibit">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-column"></i></div>
+                                Monitoring Bibit
+                            </a>
+                            <a class="nav-link <?php if($menu == 'stokbibit'){ echo 'active'; } ?>" href="<?= url('/') ?>/pegawai/stokbibit">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-packing"></i></div>
+                                Stok
                             </a>
                         </div>
                     </div>
@@ -81,7 +93,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.datatables.net/2.0.4/js/dataTables.min.js"></script>
-        <script src="{{ asset('admin/js/scripts.js') }}"></script>
+        <script src="{{ asset('/admin/js/scripts.js') }}"></script>
         @stack('scripts')
     </body>
 </html>

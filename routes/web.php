@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PegawaiController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +49,16 @@ Route::group(['middleware' => 'role:admin'], function () {
 
 //routes untuk pegawai
 Route::group(['middleware' => 'role:pegawai'], function () {
-
+    Route::get('/pegawai/dashboard', function(){
+        return view('pegawai.dashboard', ['menu' => 'dashboard']);
+    });
+    Route::get('/pegawai/product', [PegawaiController::class, 'index']);
+    Route::get('/pegawai/product/add', function(){
+        return view('pegawai.add-product', ['menu' => 'produkbibit']);
+    });
+    Route::post('/pegawai/product/add', [PegawaiController::class, 'store']);
+    Route::put('/pegawai/product/update/{id}', [PegawaiController::class, 'update']);
+    Route::get('/logout-pegawai', [AuthController::class, 'logout']);
 });
 
 //routes untuk pemilik

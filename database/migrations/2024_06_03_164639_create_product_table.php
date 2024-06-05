@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('product', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_bibit');
-            $table->string('nama_bibit');
-            $table->text('detail_bibit');
-            $table->unsignedBigInteger('harga_bibit');
-            $table->integer('stok_bibit');
+            $table->string('kode')->unique();
+            $table->string('nama');
+            $table->text('detail');
+            $table->unsignedBigInteger('harga');
+            $table->integer('stok');
             $table->string('image');
-            $table->enum('status_bibit', ['ready', 'soldout']);
+            $table->enum('jenis_pesanan', ['preorder', 'ready']);
+            $table->date('tanggal_tanam')->nullable();
+            $table->enum('display', ['Tampilkan', 'Sembunyikan'])->default('Tampilkan');
             $table->timestamps();
         });
     }
