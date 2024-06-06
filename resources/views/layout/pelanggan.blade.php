@@ -46,9 +46,9 @@
                     <h3 data-bs-target="#collapse_1">Menu</h3>
                     <div class="collapse dont-collapse-sm links" id="collapse_1">
                         <ul>
-                            <li><a href="about.html">Tentang Kami</a></li>
-                            <li><a href="">Registrasi</a></li>
-                            <li><a href="help.html">Login</a></li>
+                            <li><a href="/about-us">Tentang Kami</a></li>
+                            <li><a href="/registrasi">Registrasi</a></li>
+                            <li><a href="/login">Login</a></li>
                         </ul>
                     </div>
                 </div>

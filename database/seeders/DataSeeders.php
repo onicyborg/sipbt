@@ -50,6 +50,17 @@ class DataSeeders extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nama' => 'Pelanggan User',
+                'alamat' => 'Jl. Contoh Alamat No.3',
+                'nomortelepon' => '081234567892',
+                'username' => 'pelanggan',
+                'password' => Hash::make('passwordpelanggan'),
+                'role' => 'pelanggan',
+                'remember_token' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
 

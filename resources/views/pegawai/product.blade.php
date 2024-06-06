@@ -4,7 +4,6 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">Produk Bibit</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="/pegawai/dashboard">Dashboard</a></li>
             <li class="breadcrumb-item active">Produk Bibit</li>
         </ol>
         <div class="card mb-4">
