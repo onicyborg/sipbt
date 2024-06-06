@@ -63,20 +63,26 @@
                                     </td>
                                     <td>{{ $item->status_pesanan }}</td>
                                     <td>
-                                        @if ($item->product->jenis_pesanan == 'ready')
-                                            <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
-                                                title="Hanya Tersedia Untuk Pesanan Pre-Order">
-                                                <button class="btn btn-secondary" type="button" disabled><i
-                                                    class="fa-regular fa-share-from-square"></i></button>
+                                        <div class="d-flex align-items-center">
+                                            @if ($item->product->jenis_pesanan == 'ready')
+                                                <span class="me-2" data-bs-toggle="tooltip"
+                                                    title="Hanya Tersedia Untuk Pesanan Pre-Order">
+                                                    <button class="btn btn-secondary btn-sm" type="button" disabled><i
+                                                            class="fa-regular fa-share-from-square"></i></button>
+                                                </span>
+                                            @else
+                                                <span class="me-2" data-bs-toggle="tooltip"
+                                                    title="Lihat Proses Pesanan Pre-order">
+                                                    <a href="/pelanggan/detail-order/{{ $item->id }}"
+                                                        class="btn btn-secondary btn-sm"><i
+                                                            class="fa-regular fa-share-from-square"></i></a>
+                                                </span>
+                                            @endif
+                                            <span data-bs-toggle="tooltip" title="Print Struk Pesanan">
+                                                <a href="/pelanggan/cetak-struk/{{ $item->id }}"
+                                                    class="btn btn-secondary btn-sm" target="blank"><i class="fa-solid fa-print"></i></a>
                                             </span>
-                                        @else
-                                            <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
-                                                title="Lihat Proses Pesanan Pre-order">
-                                                <a href="/pelanggan/detail-order/{{ $item->id }}"
-                                                    class="btn btn-secondary"><i
-                                                        class="fa-regular fa-share-from-square"></i></a>
-                                            </span>
-                                        @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

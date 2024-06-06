@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Perkembangan;
 use App\Models\Product;
 use App\Models\SalesProduct;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,16 +71,16 @@ class PelangganController extends Controller
         $order = new SalesProduct();
         $order->user_id = Auth::id();
         $order->product_id = $request->product_id;
-        if($request->delivery_option != 'ambil'){
+        if ($request->delivery_option != 'ambil') {
             $order->alamat_pengiriman = $request->alamat;
             $order->ongkir = $ongkir;
         }
-        if($product->jenis_pesanan == 'ready'){
+        if ($product->jenis_pesanan == 'ready') {
             $order->status_pesanan = 'Siap Kirim / Siap Diambil';
-        }else{
+        } else {
             $order->status_pesanan = 'Pending';
         }
-        if($product->tanggal_tanam != null){
+        if ($product->tanggal_tanam != null) {
             $order->tanggal_penanaman = $product->tanggal_tanam;
         }
         $order->jumlah = $jumlah;
@@ -97,5 +99,20 @@ class PelangganController extends Controller
         $order = SalesProduct::where('user_id', Auth::id())->get();
 
         return view('pelanggan.pesanan', ['menu' => 'pesanan', 'order' => $order]);
+    }
+
+    public function detail_monitoring($id)
+    {
+        $order = SalesProduct::find($id);
+        $data = Perkembangan::where('sales_product_id', $id)->orderBy('created_at', 'desc')->get();
+
+        return view('pelanggan.detail-pesanan', ['menu' => 'pesanan', 'data' => $data, 'order' => $order]);
+    }
+
+    // Fungsi untuk mencetak struk pesanan
+    public function cetakStruk($id)
+    {
+        $order = SalesProduct::findOrFail($id);
+        return view('pelanggan.print', compact('order'));
     }
 }

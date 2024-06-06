@@ -71,6 +71,10 @@ Route::group(['middleware' => 'role:pegawai'], function () {
     Route::put('/pegawai/update-status-pesanan/siap-kirim/{id}', [PegawaiController::class, 'update_status_siap_kirim']);
     Route::put('/pegawai/update-status-pesanan/dikirim/{id}', [PegawaiController::class, 'update_status_dikirim']);
 
+    Route::get('/pegawai/monitoring-bibit', [PegawaiController::class, 'index_monitoring']);
+    Route::get('/pegawai/monitoring-bibit/detail/{id}', [PegawaiController::class, 'detail_monitoring']);
+    Route::post('/add-progress-monitoring/{id}', [PegawaiController::class, 'store_data_monitoring']);
+
     Route::get('/logout-pegawai', [AuthController::class, 'logout']);
 });
 
@@ -87,6 +91,8 @@ Route::group(['middleware' => 'role:pelanggan'], function () {
     Route::post('/pelanggan/order', [PelangganController::class, 'store_order']);
 
     Route::get('/pelanggan/pesanan', [PelangganController::class, 'pesanan_index']);
+    Route::get('/pelanggan/detail-order/{id}', [PelangganController::class, 'detail_monitoring']);
+    Route::get('/pelanggan/cetak-struk/{order}', [PelangganController::class, 'cetakStruk'])->name('order.cetakStruk');
 
     Route::get('/logout-pelanggan', [AuthController::class, 'logout']);
 });

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Perkembangan;
 use App\Models\Product;
 use App\Models\SalesProduct;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -77,7 +79,7 @@ class PegawaiController extends Controller
     {
         // Validasi input
         $request->validate([
-            'kode' => 'required|string|max:255|unique:product,kode,'.$id,
+            'kode' => 'required|string|max:255|unique:product,kode,' . $id,
             'nama' => 'required|string|max:255',
             'detail' => 'required|string',
             'harga' => 'required|numeric',
@@ -109,7 +111,7 @@ class PegawaiController extends Controller
         // Proses upload gambar
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
-            if($product->image != 'default.png'){
+            if ($product->image != 'default.png') {
                 if ($product->image && File::exists(public_path('storage/images/' . $product->image))) {
                     File::delete(public_path('storage/images/' . $product->image));
                 }
@@ -164,5 +166,71 @@ class PegawaiController extends Controller
         $order->status_pesanan = 'Dikirim / Diambil';
         $order->save();
         return redirect()->back()->with('success', 'Status Pesanan Diubah');
+    }
+
+    public function index_monitoring()
+    {
+        $order = SalesProduct::where('status_pesanan', '!=', 'Pending')
+            ->whereHas('product', function ($query) {
+                $query->where('jenis_pesanan', '!=', 'ready');
+            })
+            ->get();
+
+        return view('pegawai.monitoring-bibit', ['menu' => 'monitoringbibit', 'order' => $order]);
+    }
+
+    public function detail_monitoring($id)
+    {
+        $order = SalesProduct::find($id);
+        $data = Perkembangan::where('sales_product_id', $id)->orderBy('created_at', 'desc')->get();
+
+        return view('pegawai.detail-monitoring-bibit', ['menu' => 'monitoringbibit', 'data' => $data, 'order' => $order]);
+    }
+
+    public function store_data_monitoring(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'tinggi' => 'required|numeric|min:0',
+            'keterangan' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Buat instance baru untuk Perkembangan
+        $monitoring = new Perkembangan();
+
+        // Mengisi properti monitoring dari request
+        $monitoring->title = $request->title;
+        $monitoring->tinggi = $request->tinggi;
+        $monitoring->keterangan = $request->keterangan;
+        $monitoring->sales_product_id = $id;
+
+        if ($request->hasFile('image')) {
+            $imageName = Str::uuid() . '.' . $request->image->extension();
+
+            // Gunakan storage:link untuk mengakses folder storage/images
+            $request->image->storeAs('public/images', $imageName);
+
+            // Simpan nama file ke dalam database
+            $monitoring->image = $imageName;
+        }
+
+        $order = SalesProduct::find($id);
+        if ($order->tanggal_penanaman == null) {
+            $order->tanggal_penanaman = now();
+        }
+        $order->save();
+
+        $tanggalPenanaman = Carbon::parse($order->tanggal_penanaman);
+        $createdAt = Carbon::parse(now());
+        $umur = $createdAt->diffInDays($tanggalPenanaman);
+        // Menyimpan data monitoring ke database
+        $monitoring->umur = $umur;
+        $monitoring->save();
+
+
+        // Redirect ke halaman sebelumnya dengan pesan sukses
+        return redirect()->back()->with('success', 'Data progress berhasil ditambahkan');
     }
 }

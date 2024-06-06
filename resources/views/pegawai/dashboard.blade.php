@@ -18,6 +18,13 @@
 
 @endsection
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.4/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <link href="{{ asset('assetss/css/style.css') }}" rel="stylesheet">
+@endpush
+
 @push('scripts')
 <script>
     $(document).ready(function() {

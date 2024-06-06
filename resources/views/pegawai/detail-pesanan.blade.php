@@ -120,7 +120,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Anda yakin ingin memasukkan bibit ini ke proses penanaman? Hal ini tidak dapat dibatalkan.
+                        Anda yakin ingin memasukkan Pesanan ini ke proses penanaman? Hal ini tidak dapat dibatalkan.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -144,7 +144,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Anda yakin ingin memasukkan bibit ini ke status siap antar / siap ambil? Hal ini tidak dapat
+                        Anda yakin ingin memasukkan Pesanan ini ke status siap antar / siap ambil? Hal ini tidak dapat
                         dikembalikan.
                     </div>
                     <div class="modal-footer">
@@ -169,7 +169,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Apakah bibit ini sudah dikirim / diambil? Jika sudah silahkan konfirmasi dengan melakukan klik
+                        Apakah Pesanan ini sudah dikirim / diambil? Jika sudah silahkan konfirmasi dengan melakukan klik
                         tombol di bawah ini.
                     </div>
                     <div class="modal-footer">

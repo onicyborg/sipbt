@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('perkembangan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sales_product_id');
+            $table->string('title');
             $table->text('image');
             $table->integer('umur');
             $table->integer('tinggi');

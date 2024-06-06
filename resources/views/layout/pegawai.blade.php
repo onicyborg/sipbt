@@ -52,11 +52,11 @@
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-boxes-stacked"></i></i></div>
                                 Produk Bibit
                             </a>
-                            <a class="nav-link <?php if($menu == 'pesanan'){ echo 'active'; } ?>" href="<?= url('/') ?>/pegawai/pesanan">
+                            <a class="nav-link <?php if($menu == 'pesanan'){ echo 'active'; } ?>" href="/pegawai/pesanan">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></i></div>
                                 Pesanan
                             </a>
-                            <a class="nav-link <?php if($menu == 'monitoringbibit'){ echo 'active'; } ?>" href="<?= url('/') ?>/pegawai/monitoringbibit">
+                            <a class="nav-link <?php if($menu == 'monitoringbibit'){ echo 'active'; } ?>" href="/pegawai/monitoring-bibit">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-column"></i></div>
                                 Monitoring Bibit
                             </a>
