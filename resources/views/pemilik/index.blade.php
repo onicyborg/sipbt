@@ -1,4 +1,4 @@
-@extends('layout.admin')
+@extends('layout.pemilik')
 
 @section('content')
     <div class="container-fluid px-4">

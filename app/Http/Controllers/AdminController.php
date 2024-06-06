@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\SalesProduct;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -10,7 +13,42 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard', ['menu' => 'dashboard']);
+        $today = Carbon::today();
+
+        // Total sales today
+        $salesToday = SalesProduct::whereDate('created_at', $today)->sum('total_keseluruhan');
+
+        // Total sales
+        $totalSales = SalesProduct::sum('total_keseluruhan');
+
+        // Total products
+        $totalProducts = Product::count();
+
+        // Total users
+        $totalUsers = User::count();
+
+        // Sales data for chart (last 7 days)
+        $salesData = SalesProduct::selectRaw('DATE(created_at) as date, SUM(total_keseluruhan) as total')
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->take(7)
+            ->get()
+            ->reverse();
+
+        // Format the dates correctly
+        $salesData->transform(function ($item) {
+            $item->date = Carbon::parse($item->date)->format('Y-m-d');
+            return $item;
+        });
+
+        return view('admin.dashboard', [
+            'salesToday' => $salesToday,
+            'totalSales' => $totalSales,
+            'totalProducts' => $totalProducts,
+            'totalUsers' => $totalUsers,
+            'salesData' => $salesData,
+            'menu' => 'dashboard'
+        ]);
     }
 
     public function list_user()

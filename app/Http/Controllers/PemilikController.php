@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Perkembangan;
 use App\Models\Product;
 use App\Models\SalesProduct;
 use App\Models\User;
@@ -12,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 
-class PegawaiController extends Controller
+class PemilikController extends Controller
 {
     public function dashboard()
     {
@@ -44,7 +43,7 @@ class PegawaiController extends Controller
             return $item;
         });
 
-        return view('pegawai.dashboard', [
+        return view('pemilik.index', [
             'salesToday' => $salesToday,
             'totalSales' => $totalSales,
             'totalProducts' => $totalProducts,
@@ -58,7 +57,7 @@ class PegawaiController extends Controller
     {
         $product = Product::all();
 
-        return view('pegawai.product', ['product' => $product, 'menu' => 'produkbibit']);
+        return view('pemilik.product', ['product' => $product, 'menu' => 'produkbibit']);
     }
 
     public function store(Request $request)
@@ -113,7 +112,7 @@ class PegawaiController extends Controller
 
         $product->save();
 
-        return redirect('/pegawai/product')->with('success', 'Produk Bibit berhasil ditambahkan.');
+        return redirect('/pemilik/produk-bibit')->with('success', 'Produk Bibit berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
@@ -171,107 +170,24 @@ class PegawaiController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil diperbarui');
     }
 
-    public function pesanan()
+    public function laporan(Request $request)
     {
-        $order = SalesProduct::orderBy('created_at', 'desc')->get();
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
 
-        return view('pegawai.pesanan', ['menu' => 'pesanan', 'order' => $order]);
-    }
+        $query = SalesProduct::query();
 
-    public function detail_pesanan($id)
-    {
-        $order = SalesProduct::find($id);
+        if ($start_date && $end_date) {
+            $query->whereBetween('created_at', [$start_date, $end_date]);
+        }
 
-        return view('pegawai.detail-pesanan', ['menu' => 'pesanan', 'order' => $order]);
-    }
+        $orders = $query->with('product')->get();
 
-    public function update_status_tanam_bibit($id)
-    {
-        $order = SalesProduct::find($id);
-        $order->status_pesanan = 'Proses Penanaman';
-        $order->save();
-        return redirect()->back()->with('success', 'Status Pesanan Diubah');
-    }
-
-    public function update_status_siap_kirim($id)
-    {
-        $order = SalesProduct::find($id);
-        $order->status_pesanan = 'Siap Kirim / Siap Diambil';
-        $order->save();
-        return redirect()->back()->with('success', 'Status Pesanan Diubah');
-    }
-
-    public function update_status_dikirim($id)
-    {
-        $order = SalesProduct::find($id);
-        $order->status_pesanan = 'Dikirim / Diambil';
-        $order->save();
-        return redirect()->back()->with('success', 'Status Pesanan Diubah');
-    }
-
-    public function index_monitoring()
-    {
-        $order = SalesProduct::where('status_pesanan', '!=', 'Pending')
-            ->whereHas('product', function ($query) {
-                $query->where('jenis_pesanan', '!=', 'ready');
-            })
-            ->get();
-
-        return view('pegawai.monitoring-bibit', ['menu' => 'monitoringbibit', 'order' => $order]);
-    }
-
-    public function detail_monitoring($id)
-    {
-        $order = SalesProduct::find($id);
-        $data = Perkembangan::where('sales_product_id', $id)->orderBy('created_at', 'desc')->get();
-
-        return view('pegawai.detail-monitoring-bibit', ['menu' => 'monitoringbibit', 'data' => $data, 'order' => $order]);
-    }
-
-    public function store_data_monitoring(Request $request, $id)
-    {
-        // Validasi input
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'tinggi' => 'required|numeric|min:0',
-            'keterangan' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        return view('pemilik.laporan-penjualan', [
+            'orders' => $orders,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'menu' => 'laporanpenjualan'
         ]);
-
-        // Buat instance baru untuk Perkembangan
-        $monitoring = new Perkembangan();
-
-        // Mengisi properti monitoring dari request
-        $monitoring->title = $request->title;
-        $monitoring->tinggi = $request->tinggi;
-        $monitoring->keterangan = $request->keterangan;
-        $monitoring->sales_product_id = $id;
-
-        if ($request->hasFile('image')) {
-            $imageName = Str::uuid() . '.' . $request->image->extension();
-
-            // Gunakan storage:link untuk mengakses folder storage/images
-            $request->image->storeAs('public/images', $imageName);
-
-            // Simpan nama file ke dalam database
-            $monitoring->image = $imageName;
-        }
-
-        $order = SalesProduct::find($id);
-        if ($order->tanggal_penanaman == null) {
-            $order->tanggal_penanaman = now();
-        }
-        $order->save();
-
-        $tanggalPenanaman = Carbon::parse($order->tanggal_penanaman);
-        $createdAt = Carbon::parse(now());
-        $umur = $createdAt->diffInDays($tanggalPenanaman);
-        // Menyimpan data monitoring ke database
-        $monitoring->umur = $umur;
-        $monitoring->save();
-
-
-        // Redirect ke halaman sebelumnya dengan pesan sukses
-        return redirect()->back()->with('success', 'Data progress berhasil ditambahkan');
     }
 }

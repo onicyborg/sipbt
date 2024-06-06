@@ -50,7 +50,7 @@ class AuthController extends Controller
             // Cek peran (role) dan redirect sesuai peran
             switch ($user->role) {
                 case 'pemilik':
-                    // return redirect()->route('pemilik.dashboard');
+                    return redirect('/pemilik/dashboard');
                 case 'admin':
                     return redirect('/admin/dashboard');
                 case 'pegawai':

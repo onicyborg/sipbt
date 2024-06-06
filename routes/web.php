@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PemilikController;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -55,9 +56,7 @@ Route::group(['middleware' => 'role:admin'], function () {
 
 //routes untuk pegawai
 Route::group(['middleware' => 'role:pegawai'], function () {
-    Route::get('/pegawai/dashboard', function(){
-        return view('pegawai.dashboard', ['menu' => 'dashboard']);
-    });
+    Route::get('/pegawai/dashboard', [PegawaiController::class, 'dashboard']);
     Route::get('/pegawai/product', [PegawaiController::class, 'index']);
     Route::get('/pegawai/product/add', function(){
         return view('pegawai.add-product', ['menu' => 'produkbibit']);
@@ -80,7 +79,18 @@ Route::group(['middleware' => 'role:pegawai'], function () {
 
 //routes untuk pemilik
 Route::group(['middleware' => 'role:pemilik'], function () {
+    Route::get('/pemilik/dashboard', [PemilikController::class, 'dashboard']);
+    Route::get('/pemilik/produk-bibit', [PemilikController::class, 'index']);
 
+    Route::get('/pemilik/product/add', function(){
+        return view('pemilik.add-product', ['menu' => 'produkbibit']);
+    });
+    Route::post('/pemilik/product/add', [PemilikController::class, 'store']);
+    Route::put('/pemilik/product/update/{id}', [PemilikController::class, 'update']);
+
+    Route::get('/pemilik/laporan-penjualan', [PemilikController::class, 'laporan'])->name('laporan.penjualan');
+
+    Route::get('/logout-pemilik', [AuthController::class, 'logout']);
 });
 
 //routes untuk pelanggan
