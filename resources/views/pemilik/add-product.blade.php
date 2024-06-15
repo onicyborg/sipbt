@@ -4,7 +4,7 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">Produk Bibit</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="/pemilik/product-bibit">Produk Bibit</a></li>
+            <li class="breadcrumb-item"><a href="/pemilik/produk-bibit">Produk Bibit</a></li>
             <li class="breadcrumb-item active">Tambah Produk Bibit</li>
         </ol>
         <div class="card mb-4">
