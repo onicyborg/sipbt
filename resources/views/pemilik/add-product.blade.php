@@ -1,10 +1,10 @@
-@extends('layout.pegawai')
+@extends('layout.pemilik')
 
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Produk Bibit</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="/pegawai/product">Produk Bibit</a></li>
+            <li class="breadcrumb-item"><a href="/pemilik/product">Produk Bibit</a></li>
             <li class="breadcrumb-item active">Tambah Produk Bibit</li>
         </ol>
         <div class="card mb-4">
