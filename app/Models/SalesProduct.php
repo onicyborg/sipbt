@@ -14,6 +14,12 @@ class SalesProduct extends Model
         'product_id',
         'jumlah',
         'total',
+        'status_pesanan',
+        'tanggal_penanaman',
+        'alamat_pengiriman',
+        'ongkir',
+        'total_keseluruhan',
+        'metode_pembayaran'
     ];
 
     public function product()
@@ -29,5 +35,10 @@ class SalesProduct extends Model
     public function perkembangan()
     {
         return $this->hasMany(Perkembangan::class, 'sales_product_id', 'id');
+    }
+
+    public function bukti_transfer()
+    {
+        return $this->hasOne(BuktiTransfer::class, 'sales_product_id', 'id');
     }
 }

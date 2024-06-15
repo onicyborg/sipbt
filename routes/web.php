@@ -73,6 +73,7 @@ Route::group(['middleware' => 'role:pegawai'], function () {
     Route::get('/pegawai/monitoring-bibit', [PegawaiController::class, 'index_monitoring']);
     Route::get('/pegawai/monitoring-bibit/detail/{id}', [PegawaiController::class, 'detail_monitoring']);
     Route::post('/add-progress-monitoring/{id}', [PegawaiController::class, 'store_data_monitoring']);
+    Route::post('/pegawai/konfirmasi-pembayaran/{id}', [PegawaiController::class, 'payment_confirmation']);
 
     Route::get('/logout-pegawai', [AuthController::class, 'logout']);
 });
@@ -103,6 +104,8 @@ Route::group(['middleware' => 'role:pelanggan'], function () {
     Route::get('/pelanggan/pesanan', [PelangganController::class, 'pesanan_index']);
     Route::get('/pelanggan/detail-order/{id}', [PelangganController::class, 'detail_monitoring']);
     Route::get('/pelanggan/cetak-struk/{order}', [PelangganController::class, 'cetakStruk'])->name('order.cetakStruk');
+
+    Route::post('/pelanggan/upload-bukti/{id}', [PelangganController::class, 'upload_bukti_transfer']);
 
     Route::get('/logout-pelanggan', [AuthController::class, 'logout']);
 });

@@ -18,10 +18,10 @@ class PemilikController extends Controller
         $today = Carbon::today();
 
         // Total sales today
-        $salesToday = SalesProduct::whereDate('created_at', $today)->sum('total_keseluruhan');
+        $salesToday = SalesProduct::whereDate('created_at', $today)->where('status_pesanan', 'Dikirim / Diambil')->sum('total_keseluruhan');
 
         // Total sales
-        $totalSales = SalesProduct::sum('total_keseluruhan');
+        $totalSales = SalesProduct::where('status_pesanan', 'Dikirim / Diambil')->sum('total_keseluruhan');
 
         // Total products
         $totalProducts = Product::count();
@@ -32,6 +32,7 @@ class PemilikController extends Controller
         // Sales data for chart (last 7 days)
         $salesData = SalesProduct::selectRaw('DATE(created_at) as date, SUM(total_keseluruhan) as total')
             ->groupBy('date')
+            ->where('status_pesanan', 'Dikirim / Diambil')
             ->orderBy('date', 'desc')
             ->take(7)
             ->get()

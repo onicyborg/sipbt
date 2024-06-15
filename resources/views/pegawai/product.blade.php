@@ -87,19 +87,16 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="/pegawai/product/update/{{ $item->id }}"
-                                                    enctype="multipart/form-data">
+                                                <form method="post" action="/pegawai/product/update/{{ $item->id }}" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="mb-3">
                                                         <label>Kode Bibit</label>
-                                                        <input class="form-control" type="text" name="kode"
-                                                            value="{{ $item->kode }}" required />
+                                                        <input class="form-control" type="text" name="kode" value="{{ $item->kode }}" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Nama Bibit</label>
-                                                        <input class="form-control" type="text" name="nama"
-                                                            value="{{ $item->nama }}" required />
+                                                        <input class="form-control" type="text" name="nama" value="{{ $item->nama }}" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Detail</label>
@@ -107,44 +104,36 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Harga</label>
-                                                        <input class="form-control" type="text" name="harga"
-                                                            value="{{ $item->harga }}" required />
+                                                        <input class="form-control" type="text" name="harga" value="{{ $item->harga }}" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Stok</label>
-                                                        <input class="form-control" type="text" name="stok"
-                                                            value="{{ $item->stok }}" required />
+                                                        <input class="form-control" type="text" name="stok" value="{{ $item->stok }}" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Jenis Pesanan</label>
-                                                        <select name="jenis_pesanan" class="form-select"
-                                                            id="jenisPesanan{{ $item->id }}"
-                                                            onchange="toggleTanggalTanam({{ $item->id }})" required>
-                                                            <option value="preorder"
-                                                                @if ($item->jenis_pesanan == 'preorder') selected @endif>Preorder
-                                                            </option>
-                                                            <option value="ready"
-                                                                @if ($item->jenis_pesanan == 'ready') selected @endif>Ready
-                                                            </option>
+                                                        <select name="jenis_pesanan" class="form-select" id="jenisPesanan{{ $item->id }}" onchange="toggleFields({{ $item->id }})" required>
+                                                            <option value="preorder" @if ($item->jenis_pesanan == 'preorder') selected @endif>Preorder</option>
+                                                            <option value="ready" @if ($item->jenis_pesanan == 'ready') selected @endif>Ready</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Tampilkan Di Etalase</label>
                                                         <select name="display" class="form-select" required>
-                                                            <option value="Tampilkan"
-                                                                @if ($item->display == 'Tampilkan') selected @endif>Tampilkan
-                                                            </option>
-                                                            <option value="Sembunyikan"
-                                                                @if ($item->display == 'Sembunyikan') selected @endif>Sembunyikan
-                                                            </option>
+                                                            <option value="Tampilkan" @if ($item->display == 'Tampilkan') selected @endif>Tampilkan</option>
+                                                            <option value="Sembunyikan" @if ($item->display == 'Sembunyikan') selected @endif>Sembunyikan</option>
                                                         </select>
                                                     </div>
-                                                    <div class="mb-3" id="tanggalTanamDiv{{ $item->id }}"
-                                                        @if ($item->jenis_pesanan == 'preorder') style="display: none;" @endif>
+                                                    <div class="mb-3" id="tanggalTanamDiv{{ $item->id }}" @if ($item->jenis_pesanan == 'preorder') style="display: none;" @endif>
                                                         <label>Tanggal Tanam</label>
-                                                        <input class="form-control" type="date" name="tanggal_tanam"
-                                                            id="tanggalTanam{{ $item->id }}"
-                                                            @if ($item->jenis_pesanan == 'ready') value="{{ $item->tanggal_tanam }}" @endif />
+                                                        <input class="form-control" type="date" name="tanggal_tanam" id="tanggalTanam{{ $item->id }}" @if ($item->jenis_pesanan == 'ready') value="{{ $item->tanggal_tanam }}" @endif />
+                                                    </div>
+                                                    <div class="mb-3" id="jarakTanamDiv{{ $item->id }}" @if ($item->jenis_pesanan == 'ready') style="display: none;" @endif>
+                                                        <label>Jarak Tanam (cm)</label>
+                                                        <select class="form-control" id="jarak_tanam{{ $item->id }}" name="jarak_tanam">
+                                                            <option value="50" @if ($item->jarak_tanam == 50) selected @endif>50 cm</option>
+                                                            <option value="60" @if ($item->jarak_tanam == 60) selected @endif>60 cm</option>
+                                                        </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Gambar</label>
@@ -240,18 +229,27 @@
         </script>
     @endif
     <script>
-        function toggleTanggalTanam(id) {
-            const jenisPesanan = document.getElementById('jenisPesanan' + id).value;
-            const tanggalTanamDiv = document.getElementById('tanggalTanamDiv' + id);
-            const tanggalTanam = document.getElementById('tanggalTanam' + id);
+        function toggleFields(id) {
+        const jenisPesanan = document.getElementById('jenisPesanan' + id).value;
+        const tanggalTanamDiv = document.getElementById('tanggalTanamDiv' + id);
+        const tanggalTanam = document.getElementById('tanggalTanam' + id);
+        const jarakTanamDiv = document.getElementById('jarakTanamDiv' + id);
+        const jarakTanam = document.getElementById('jarak_tanam' + id);
 
-            if (jenisPesanan === 'ready') {
-                tanggalTanamDiv.style.display = 'block';
-                tanggalTanam.required = true;
-            } else {
-                tanggalTanamDiv.style.display = 'none';
-                tanggalTanam.required = false;
-            }
+        if (jenisPesanan === 'ready') {
+            tanggalTanamDiv.style.display = 'block';
+            tanggalTanam.required = true;
+            jarakTanamDiv.style.display = 'none';
+            jarakTanam.required = false;
+        } else {
+            tanggalTanamDiv.style.display = 'none';
+            tanggalTanam.required = false;
+            jarakTanamDiv.style.display = 'block';
+            jarakTanam.required = true;
         }
+    }
+
+    // Initialize fields based on current selection
+    toggleFields({{ $item->id }});
     </script>
 @endpush

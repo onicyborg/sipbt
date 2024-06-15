@@ -53,6 +53,13 @@
                                     placeholder="Isikan Stok Bibit" required />
                             </div>
                             <div class="mb-3">
+                                <label for="jarak_tanam_preorder" class="form-label">Jarak Tanam (cm)</label>
+                                <select class="form-control" id="jarak_tanam_preorder" name="jarak_tanam" required>
+                                    <option value="50">50 cm</option>
+                                    <option value="60">60 cm</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="image_preorder" class="form-label">Gambar</label>
                                 <input class="form-control" id="image_preorder" name="image" type="file">
                             </div>

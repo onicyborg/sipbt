@@ -21,6 +21,7 @@
                                 <th>Nama Bibit</th>
                                 <th>Gambar</th>
                                 <th>Status Pesanan</th>
+                                <th class="text-center">Tanggal Pesanan</th>
                                 <th class="text-center">#</th>
                             </tr>
                         </thead>
@@ -32,6 +33,7 @@
                                 <th>Nama Bibit</th>
                                 <th>Gambar</th>
                                 <th>Status Pesanan</th>
+                                <th class="text-center">Tanggal Pesanan</th>
                                 <th class="text-center">#</th>
                             </tr>
                         </tfoot>
@@ -47,6 +49,7 @@
                                             alt="Gambar Produk" class="img-thumbnail" style="width: 100px; height: auto;">
                                     </td>
                                     <td>{{ $item->status_pesanan }}</td>
+                                    <td class="text-center">{{ $item->created_at }}</td>
                                     <td>
                                         <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
                                             title="Lihat Detail Pesanan Pelanggan">

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('image');
             $table->enum('jenis_pesanan', ['preorder', 'ready']);
             $table->date('tanggal_tanam')->nullable();
+            $table->enum('jarak_tanam', ['50', '60'])->nullable();
             $table->enum('display', ['Tampilkan', 'Sembunyikan'])->default('Tampilkan');
             $table->timestamps();
         });

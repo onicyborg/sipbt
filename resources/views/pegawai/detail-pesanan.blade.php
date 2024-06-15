@@ -41,69 +41,288 @@
                             @endif
                         </p>
                         <p><strong>Total Pembayaran:</strong> Rp. {{ number_format($order->total_keseluruhan) }}</p>
+                        <p><strong>Metode Pembayaran:</strong> {{ $order->metode_pembayaran }}</p>
+                        @if ($order->bukti_transfer != null)
+                            <p><strong>Status Pembayaran:</strong> {{ $order->bukti_transfer->status }}</p>
+                        @endif
                         <p><strong>Status Pesanan Saat Ini:</strong> {{ $order->status_pesanan }}</p>
                         <p><strong>Alamat Pengantaran:</strong> {{ $order->alamat_pengiriman }}</p>
 
-                        @if ($order->status_pesanan == 'Pending')
-                            <div class="mt-4">
-                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#processPlantingModal">
-                                    Proses Penanaman Bibit
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#readyToShipModal" disabled>
-                                    Bibit Siap Dikirim / Diambil
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#shippedModal" disabled>
-                                    Bibit Dikirim / Diambil
-                                </button>
-                            </div>
-                        @elseif ($order->status_pesanan == 'Proses Penanaman')
-                            <div class="mt-4">
-                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#processPlantingModal" disabled>
-                                    Proses Penanaman Bibit
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#readyToShipModal">
-                                    Bibit Siap Dikirim / Diambil
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#shippedModal" disabled>
-                                    Bibit Dikirim / Diambil
-                                </button>
-                            </div>
-                        @elseif ($order->status_pesanan == 'Siap Kirim / Siap Diambil')
-                            <div class="mt-4">
-                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#processPlantingModal" disabled>
-                                    Proses Penanaman Bibit
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#readyToShipModal" disabled>
-                                    Bibit Siap Dikirim / Diambil
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#shippedModal">
-                                    Bibit Dikirim / Diambil
-                                </button>
-                            </div>
+                        @if ($order->product->jenis_pesanan == 'ready')
+                            @if ($order->metode_pembayaran == 'Transfer')
+                                @if ($order->bukti_transfer->status == 'Menunggu Konfirmasi')
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Konfirmasi Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Pending')
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal">
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Siap Kirim / Siap Diambil')
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal">
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Menunggu Pembayaran')
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @endif
+                            @else
+                                @if ($order->status_pesanan == 'Pending')
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal">
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Siap Kirim / Siap Diambil')
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal">
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="mt-4">
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @endif
+                            @endif
                         @else
-                            <div class="mt-4">
-                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#processPlantingModal" disabled>
-                                    Proses Penanaman Bibit
-                                </button>
-                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#readyToShipModal" disabled>
-                                    Bibit Siap Dikirim / Diambil
-                                </button>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#shippedModal" disabled>
-                                    Bibit Dikirim / Diambil
-                                </button>
-                            </div>
+                            @if ($order->metode_pembayaran == 'Transfer')
+                                @if ($order->bukti_transfer->status == 'Menunggu Konfirmasi')
+                                    <div class="mt-4 d-flex justify-content-between gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Konfirmasi Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Proses Penanaman')
+                                    <div class="mt-4 d-flex justify-content-between gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal">
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->bukti_transfer->status == 'Menunggu Pembayaran')
+                                    <div class="mt-4 d-flex justify-content-between gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Konfirmasi Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Siap Kirim / Siap Diambil')
+                                    <div class="mt-4 d-flex justify-content-between gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal">
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="mt-4 d-flex justify-content-between gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#confirmationPaymentModal">
+                                            Lihat Bukti Pembayaran
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal">
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @endif
+                            @else
+                                @if ($order->status_pesanan == 'Pending')
+                                    <div class="mt-4 d-flex gap-2">
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal">
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Proses Penanaman')
+                                    <div class="mt-4 d-flex gap-2">
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal">
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @elseif ($order->status_pesanan == 'Siap Kirim / Siap Diambil')
+                                    <div class="mt-4 d-flex gap-2">
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal">
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @else
+                                    <div class="mt-4 d-flex gap-2">
+                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#processPlantingModal" disabled>
+                                            Proses Penanaman Bibit
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#readyToShipModal" disabled>
+                                            Bibit Siap Dikirim / Diambil
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#shippedModal" disabled>
+                                            Bibit Dikirim / Diambil
+                                        </button>
+                                    </div>
+                                @endif
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -127,7 +346,7 @@
                         <form method="post" action="/pegawai/update-status-pesanan/tanam-bibit/{{ $order->id }}">
                             @csrf
                             @method('put')
-                            <button type="submit" class="btn btn-warning">Proses Penanaman</button>
+                            <button type="submit" class="btn btn-info">Proses Penanaman</button>
                         </form>
                     </div>
                 </div>
@@ -183,6 +402,40 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal Payment --}}
+        @if ($order->bukti_transfer != null)
+            <div class="modal fade" id="confirmationPaymentModal" tabindex="-1"
+                aria-labelledby="confirmationPaymentModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationPaymentModalLabel">Konfirmasi Pembayaran</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @if ($order->bukti_transfer->image != '')
+                                <img src="{{ asset('storage/images/' . $order->bukti_transfer->image) }}"
+                                    alt="Bukti Pembayaran" class="img-fluid mb-3">
+                                <p>Status Pembayaran: {{ $order->bukti_transfer->status }}</p>
+                            @else
+                                <p>Belum Mengirim Bukti Transfer.</p>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            @if ($order->bukti_transfer->image != '' && $order->bukti_transfer->status != 'Pembayaran Dikonfirmasi')
+                                <form method="post" action="/pegawai/konfirmasi-pembayaran/{{ $order->id }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning">Konfirmasi</button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 @endsection
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BuktiTransfer;
 use App\Models\Perkembangan;
 use App\Models\Product;
 use App\Models\SalesProduct;
@@ -19,10 +20,10 @@ class PegawaiController extends Controller
         $today = Carbon::today();
 
         // Total sales today
-        $salesToday = SalesProduct::whereDate('created_at', $today)->sum('total_keseluruhan');
+        $salesToday = SalesProduct::whereDate('created_at', $today)->where('status_pesanan', 'Dikirim / Diambil')->sum('total_keseluruhan');
 
         // Total sales
-        $totalSales = SalesProduct::sum('total_keseluruhan');
+        $totalSales = SalesProduct::where('status_pesanan', 'Dikirim / Diambil')->sum('total_keseluruhan');
 
         // Total products
         $totalProducts = Product::count();
@@ -33,6 +34,7 @@ class PegawaiController extends Controller
         // Sales data for chart (last 7 days)
         $salesData = SalesProduct::selectRaw('DATE(created_at) as date, SUM(total_keseluruhan) as total')
             ->groupBy('date')
+            ->where('status_pesanan', 'Dikirim / Diambil')
             ->orderBy('date', 'desc')
             ->take(7)
             ->get()
@@ -75,6 +77,8 @@ class PegawaiController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $rules['tanggal_tanam'] = 'required|date';
+        } else if ($request->jenis_pesanan == 'preorder') {
+            $rules['jarak_tanam'] = 'required|in:50,60';
         }
 
         // Validate the request
@@ -109,6 +113,8 @@ class PegawaiController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $product->tanggal_tanam = $validatedData['tanggal_tanam'];
+        } else if ($request->jenis_pesanan == 'preorder') {
+            $product->jarak_tanam = $validatedData['jarak_tanam'];
         }
 
         $product->save();
@@ -116,20 +122,35 @@ class PegawaiController extends Controller
         return redirect('/pegawai/product')->with('success', 'Produk Bibit berhasil ditambahkan.');
     }
 
+
     public function update(Request $request, $id)
     {
         // Validasi input
-        $request->validate([
+        $rules = [
             'kode' => 'required|string|max:255|unique:product,kode,' . $id,
             'nama' => 'required|string|max:255',
             'detail' => 'required|string',
             'harga' => 'required|numeric',
             'stok' => 'required|integer',
             'jenis_pesanan' => 'required|in:preorder,ready',
-            'tanggal_tanam' => 'nullable|date|required_if:jenis_pesanan,ready',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'display' => 'required'
-        ]);
+        ];
+
+        if ($request->jenis_pesanan == 'ready') {
+            $rules['tanggal_tanam'] = 'required|date';
+        } else if ($request->jenis_pesanan == 'preorder') {
+            $rules['jarak_tanam'] = 'required|in:50,60';
+        }
+
+        // Validate the request
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         // Temukan produk berdasarkan ID
         $product = Product::findOrFail($id);
@@ -145,8 +166,10 @@ class PegawaiController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $product->tanggal_tanam = $request->tanggal_tanam;
-        } else {
+            $product->jarak_tanam = null;
+        } else if ($request->jenis_pesanan == 'preorder') {
             $product->tanggal_tanam = null;
+            $product->jarak_tanam = $request->jarak_tanam;
         }
 
         // Proses upload gambar
@@ -170,6 +193,7 @@ class PegawaiController extends Controller
         // Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Produk berhasil diperbarui');
     }
+
 
     public function pesanan()
     {
@@ -273,5 +297,18 @@ class PegawaiController extends Controller
 
         // Redirect ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Data progress berhasil ditambahkan');
+    }
+
+    public function payment_confirmation($id)
+    {
+        $order = SalesProduct::find($id);
+        $payment = BuktiTransfer::where('sales_product_id', $id)->first();
+
+        $order->status_pesanan = 'Pending';
+        $payment->status = 'Pembayaran Dikonfirmasi';
+
+        if ($payment->save() && $order->save()) {
+            return redirect()->back()->with('success', 'Pembayaran Berhasil Dikonfirmasi');
+        }
     }
 }

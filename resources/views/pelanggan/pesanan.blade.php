@@ -63,28 +63,115 @@
                                     </td>
                                     <td>{{ $item->status_pesanan }}</td>
                                     <td>
-                                        <div class="d-flex align-items-center">
-                                            @if ($item->product->jenis_pesanan == 'ready')
-                                                <span class="me-2" data-bs-toggle="tooltip"
-                                                    title="Hanya Tersedia Untuk Pesanan Pre-Order">
-                                                    <button class="btn btn-secondary btn-sm" type="button" disabled><i
-                                                            class="fa-regular fa-share-from-square"></i></button>
-                                                </span>
-                                            @else
-                                                <span class="me-2" data-bs-toggle="tooltip"
-                                                    title="Lihat Proses Pesanan Pre-order">
+                                        <div class="d-flex flex-wrap">
+                                            <div class="mb-2 me-2">
+                                                <span data-bs-toggle="tooltip" title="Lihat Detail Pesanan">
                                                     <a href="/pelanggan/detail-order/{{ $item->id }}"
                                                         class="btn btn-secondary btn-sm"><i
                                                             class="fa-regular fa-share-from-square"></i></a>
                                                 </span>
+                                            </div>
+                                            <div class="mb-2 me-2">
+                                                <span data-bs-toggle="tooltip" title="Print Struk Pesanan">
+                                                    <a href="/pelanggan/cetak-struk/{{ $item->id }}"
+                                                        class="btn btn-secondary btn-sm" target="blank"><i
+                                                            class="fa-solid fa-print"></i></a>
+                                                </span>
+                                            </div>
+                                            @if ($item->metode_pembayaran == 'Transfer')
+                                                @if (isset($item->bukti_transfer) && ($item->bukti_transfer->image == '' || $item->bukti_transfer->image == null))
+                                                    <div class="mb-2 me-2">
+                                                        <span data-bs-toggle="tooltip" title="Upload Bukti Pembayaran">
+                                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#uploadModal{{ $item->id }}">
+                                                                <i class="fa-solid fa-upload"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                @else
+                                                    <div class="mb-2">
+                                                        <span data-bs-toggle="tooltip" title="Lihat Bukti Pembayaran">
+                                                            <button type="button" class="btn btn-secondary btn-sm"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#viewModal{{ $item->id }}">
+                                                                <i class="fa-solid fa-eye"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                @endif
                                             @endif
-                                            <span data-bs-toggle="tooltip" title="Print Struk Pesanan">
-                                                <a href="/pelanggan/cetak-struk/{{ $item->id }}"
-                                                    class="btn btn-secondary btn-sm" target="blank"><i class="fa-solid fa-print"></i></a>
-                                            </span>
                                         </div>
                                     </td>
                                 </tr>
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="uploadModal{{ $item->id }}" tabindex="-1"
+                                    aria-labelledby="uploadModalLabel{{ $item->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form method="post" action="/pelanggan/upload-bukti/{{ $item->id }}"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="uploadModalLabel{{ $item->id }}">Upload
+                                                        Bukti Pembayaran</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="buktiPembayaran{{ $item->id }}"
+                                                            class="form-label">Pilih Bukti Pembayaran</label>
+                                                        <input class="form-control" id="buktiPembayaran{{ $item->id }}"
+                                                            name="image" type="file" required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal View -->
+                                <div class="modal fade" id="viewModal{{ $item->id }}" tabindex="-1"
+                                    aria-labelledby="viewModalLabel{{ $item->id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="viewModalLabel{{ $item->id }}">Bukti
+                                                    Pembayaran</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                @if ($item->bukti_transfer)
+                                                    <img src="{{ asset('storage/images/' . $item->bukti_transfer->image) }}"
+                                                        alt="Bukti Pembayaran" class="img-fluid">
+                                                    <p class="mt-3">
+                                                        Status:
+                                                        @if ($item->bukti_transfer->status == 'Menunggu Konfirmasi')
+                                                            Menunggu Konfirmasi
+                                                        @else
+                                                            Pembayaran Dikonfirmasi
+                                                        @endif
+                                                    </p>
+                                                @else
+                                                    <p>Tidak ada bukti pembayaran yang tersedia.</p>
+                                                @endif
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -99,7 +186,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.4/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
-    <link href="{{ asset('assetss/css/style.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('assetss/css/style.css') }}" rel="stylesheet"> --}}
 @endpush
 
 @push('scripts')
