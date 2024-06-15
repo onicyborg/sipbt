@@ -75,6 +75,8 @@ class PemilikController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $rules['tanggal_tanam'] = 'required|date';
+        } else if ($request->jenis_pesanan == 'preorder') {
+            $rules['jarak_tanam'] = 'required|in:50,60';
         }
 
         // Validate the request
@@ -109,27 +111,43 @@ class PemilikController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $product->tanggal_tanam = $validatedData['tanggal_tanam'];
+        } else if ($request->jenis_pesanan == 'preorder') {
+            $product->jarak_tanam = $validatedData['jarak_tanam'];
         }
 
         $product->save();
 
-        return redirect('/pemilik/produk-bibit')->with('success', 'Produk Bibit berhasil ditambahkan.');
+        return redirect('/pemilik/product')->with('success', 'Produk Bibit berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
     {
         // Validasi input
-        $request->validate([
+        $rules = [
             'kode' => 'required|string|max:255|unique:product,kode,' . $id,
             'nama' => 'required|string|max:255',
             'detail' => 'required|string',
             'harga' => 'required|numeric',
             'stok' => 'required|integer',
             'jenis_pesanan' => 'required|in:preorder,ready',
-            'tanggal_tanam' => 'nullable|date|required_if:jenis_pesanan,ready',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'display' => 'required'
-        ]);
+        ];
+
+        if ($request->jenis_pesanan == 'ready') {
+            $rules['tanggal_tanam'] = 'required|date';
+        } else if ($request->jenis_pesanan == 'preorder') {
+            $rules['jarak_tanam'] = 'required|in:50,60';
+        }
+
+        // Validate the request
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         // Temukan produk berdasarkan ID
         $product = Product::findOrFail($id);
@@ -145,8 +163,10 @@ class PemilikController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $product->tanggal_tanam = $request->tanggal_tanam;
-        } else {
+            $product->jarak_tanam = null;
+        } else if ($request->jenis_pesanan == 'preorder') {
             $product->tanggal_tanam = null;
+            $product->jarak_tanam = $request->jarak_tanam;
         }
 
         // Proses upload gambar

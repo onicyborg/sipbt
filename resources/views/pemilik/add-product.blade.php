@@ -1,10 +1,10 @@
-@extends('layout.pemilik')
+@extends('layout.pegawai')
 
 @section('content')
     <div class="container-fluid px-4">
         <h1 class="mt-4">Produk Bibit</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="/pemilik/produk-bibit">Produk Bibit</a></li>
+            <li class="breadcrumb-item"><a href="/pegawai/product">Produk Bibit</a></li>
             <li class="breadcrumb-item active">Tambah Produk Bibit</li>
         </ol>
         <div class="card mb-4">
@@ -51,6 +51,13 @@
                                 <label for="stok_preorder" class="form-label">Stok</label>
                                 <input class="form-control" id="stok_preorder" type="text" name="stok"
                                     placeholder="Isikan Stok Bibit" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="jarak_tanam_preorder" class="form-label">Jarak Tanam (cm)</label>
+                                <select class="form-control" id="jarak_tanam_preorder" name="jarak_tanam" required>
+                                    <option value="50">50 cm</option>
+                                    <option value="60">60 cm</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="image_preorder" class="form-label">Gambar</label>
@@ -111,12 +118,6 @@
         </div>
     </div>
 @endsection
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
-    <link href="{{ asset('assetss/css/style.css') }}" rel="stylesheet">
-@endpush
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

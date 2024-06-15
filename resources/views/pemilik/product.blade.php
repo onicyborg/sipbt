@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Dashboard</h1>
+        <h1 class="mt-4">Produk Bibit</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active">Produk Bibit</li>
         </ol>
         <div class="card mb-4">
             <div class="card-header">
@@ -87,7 +87,7 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form method="post" action="/pegawai/product/update/{{ $item->id }}"
+                                                <form method="post" action="/pemilik/product/update/{{ $item->id }}"
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
@@ -119,7 +119,7 @@
                                                         <label>Jenis Pesanan</label>
                                                         <select name="jenis_pesanan" class="form-select"
                                                             id="jenisPesanan{{ $item->id }}"
-                                                            onchange="toggleTanggalTanam({{ $item->id }})" required>
+                                                            onchange="toggleFields({{ $item->id }})" required>
                                                             <option value="preorder"
                                                                 @if ($item->jenis_pesanan == 'preorder') selected @endif>Preorder
                                                             </option>
@@ -136,8 +136,7 @@
                                                             </option>
                                                             <option value="Sembunyikan"
                                                                 @if ($item->display == 'Sembunyikan') selected @endif>
-                                                                Sembunyikan
-                                                            </option>
+                                                                Sembunyikan</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3" id="tanggalTanamDiv{{ $item->id }}"
@@ -146,6 +145,19 @@
                                                         <input class="form-control" type="date" name="tanggal_tanam"
                                                             id="tanggalTanam{{ $item->id }}"
                                                             @if ($item->jenis_pesanan == 'ready') value="{{ $item->tanggal_tanam }}" @endif />
+                                                    </div>
+                                                    <div class="mb-3" id="jarakTanamDiv{{ $item->id }}"
+                                                        @if ($item->jenis_pesanan == 'ready') style="display: none;" @endif>
+                                                        <label>Jarak Tanam (cm)</label>
+                                                        <select class="form-control" id="jarak_tanam{{ $item->id }}"
+                                                            name="jarak_tanam">
+                                                            <option value="50"
+                                                                @if ($item->jarak_tanam == 50) selected @endif>50 cm
+                                                            </option>
+                                                            <option value="60"
+                                                                @if ($item->jarak_tanam == 60) selected @endif>60 cm
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Gambar</label>
@@ -179,7 +191,7 @@
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Batal</button>
                                                 <form method="POST"
-                                                    action="/pegawai/product/delete/{{ $item->id }}">
+                                                    action="/pemilik/product/delete/{{ $item->id }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger">Hapus</button>
@@ -197,6 +209,13 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.4/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    {{-- <link href="{{ asset('assetss/css/style.css') }}" rel="stylesheet"> --}}
+@endpush
 
 @push('scripts')
     <script>
@@ -234,17 +253,23 @@
         </script>
     @endif
     <script>
-        function toggleTanggalTanam(id) {
+        function toggleFields(id) {
             const jenisPesanan = document.getElementById('jenisPesanan' + id).value;
             const tanggalTanamDiv = document.getElementById('tanggalTanamDiv' + id);
             const tanggalTanam = document.getElementById('tanggalTanam' + id);
+            const jarakTanamDiv = document.getElementById('jarakTanamDiv' + id);
+            const jarakTanam = document.getElementById('jarak_tanam' + id);
 
             if (jenisPesanan === 'ready') {
                 tanggalTanamDiv.style.display = 'block';
                 tanggalTanam.required = true;
+                jarakTanamDiv.style.display = 'none';
+                jarakTanam.required = false;
             } else {
                 tanggalTanamDiv.style.display = 'none';
                 tanggalTanam.required = false;
+                jarakTanamDiv.style.display = 'block';
+                jarakTanam.required = true;
             }
         }
     </script>

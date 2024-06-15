@@ -64,129 +64,129 @@ class DataSeeders extends Seeder
         ]);
 
 
-        $products = [
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk A',
-                'detail' => 'Detail produk A',
-                'harga' => 250,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'ready',
-                'jarak_tanam' => null,
-                'tanggal_tanam' => Carbon::now()->subDays(10),
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk B',
-                'detail' => 'Detail produk B',
-                'harga' => 150,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'preorder',
-                'jarak_tanam' => '50',
-                'tanggal_tanam' => null,
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk C',
-                'detail' => 'Detail produk C',
-                'harga' => 400,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'ready',
-                'jarak_tanam' => null,
-                'tanggal_tanam' => Carbon::now()->subDays(20),
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk D',
-                'detail' => 'Detail produk D',
-                'harga' => 200,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'preorder',
-                'jarak_tanam' => '60',
-                'tanggal_tanam' => null,
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk E',
-                'detail' => 'Detail produk E',
-                'harga' => 100,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'ready',
-                'jarak_tanam' => null,
-                'tanggal_tanam' => Carbon::now()->subDays(5),
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk F',
-                'detail' => 'Detail produk F',
-                'harga' => 500,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'preorder',
-                'jarak_tanam' => '50',
-                'tanggal_tanam' => null,
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk G',
-                'detail' => 'Detail produk G',
-                'harga' => 300,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'ready',
-                'jarak_tanam' => null,
-                'tanggal_tanam' => Carbon::now()->subDays(15),
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk H',
-                'detail' => 'Detail produk H',
-                'harga' => 1000,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'preorder',
-                'jarak_tanam' => '60',
-                'tanggal_tanam' => null,
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk I',
-                'detail' => 'Detail produk I',
-                'harga' => 230,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'ready',
-                'jarak_tanam' => null,
-                'tanggal_tanam' => Carbon::now()->subDays(8),
-                'display' => 'Tampilkan'
-            ],
-            [
-                'kode' => Str::random(10),
-                'nama' => 'Produk J',
-                'detail' => 'Detail produk J',
-                'harga' => 210,
-                'stok' => 10000,
-                'image' => 'default.png',
-                'jenis_pesanan' => 'preorder',
-                'jarak_tanam' => '50',
-                'tanggal_tanam' => null,
-                'display' => 'Tampilkan'
-            ],
-        ];
+        // $products = [
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk A',
+        //         'detail' => 'Detail produk A',
+        //         'harga' => 250,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'ready',
+        //         'jarak_tanam' => null,
+        //         'tanggal_tanam' => Carbon::now()->subDays(10),
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk B',
+        //         'detail' => 'Detail produk B',
+        //         'harga' => 150,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'preorder',
+        //         'jarak_tanam' => '50',
+        //         'tanggal_tanam' => null,
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk C',
+        //         'detail' => 'Detail produk C',
+        //         'harga' => 400,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'ready',
+        //         'jarak_tanam' => null,
+        //         'tanggal_tanam' => Carbon::now()->subDays(20),
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk D',
+        //         'detail' => 'Detail produk D',
+        //         'harga' => 200,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'preorder',
+        //         'jarak_tanam' => '60',
+        //         'tanggal_tanam' => null,
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk E',
+        //         'detail' => 'Detail produk E',
+        //         'harga' => 100,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'ready',
+        //         'jarak_tanam' => null,
+        //         'tanggal_tanam' => Carbon::now()->subDays(5),
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk F',
+        //         'detail' => 'Detail produk F',
+        //         'harga' => 500,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'preorder',
+        //         'jarak_tanam' => '50',
+        //         'tanggal_tanam' => null,
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk G',
+        //         'detail' => 'Detail produk G',
+        //         'harga' => 300,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'ready',
+        //         'jarak_tanam' => null,
+        //         'tanggal_tanam' => Carbon::now()->subDays(15),
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk H',
+        //         'detail' => 'Detail produk H',
+        //         'harga' => 1000,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'preorder',
+        //         'jarak_tanam' => '60',
+        //         'tanggal_tanam' => null,
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk I',
+        //         'detail' => 'Detail produk I',
+        //         'harga' => 230,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'ready',
+        //         'jarak_tanam' => null,
+        //         'tanggal_tanam' => Carbon::now()->subDays(8),
+        //         'display' => 'Tampilkan'
+        //     ],
+        //     [
+        //         'kode' => Str::random(10),
+        //         'nama' => 'Produk J',
+        //         'detail' => 'Detail produk J',
+        //         'harga' => 210,
+        //         'stok' => 10000,
+        //         'image' => 'default.png',
+        //         'jenis_pesanan' => 'preorder',
+        //         'jarak_tanam' => '50',
+        //         'tanggal_tanam' => null,
+        //         'display' => 'Tampilkan'
+        //     ],
+        // ];
 
-        DB::table('product')->insert($products);
+        // DB::table('product')->insert($products);
     }
 }
