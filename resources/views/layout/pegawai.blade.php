@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Republik Bibit adalah platform mempermudah pembelian bibit yang berkualitas sehingga dapat menghasilkan panen yang berlimpah" />
         <meta name="author" content="Republik Bibit" />
-        <title>Pemilik Republik Bibit</title>
+        <title>Pegawai Republik Bibit</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="{{ asset('admin/css/styles.css') }}" rel="stylesheet" />
         <link href="{{ asset('admin/assets/fontawesome/css/all.min.css') }}" rel="stylesheet" />
