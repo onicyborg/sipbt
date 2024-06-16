@@ -116,10 +116,9 @@
                                                         <input class="form-control" type="text" name="harga"
                                                             value="{{ $item->harga }}" required />
                                                     </div>
-                                                    <div class="mb-3" id="stokDiv{{ $item->id }}">
+                                                    <div class="mb-3" id="stokDiv{{ $item->id }}" @if ($item->jenis_pesanan == 'preorder') style="display: none;" @endif>
                                                         <label>Stok</label>
-                                                        <input class="form-control" type="text" id="stok{{ $item->id }}" name="stok"
-                                                            value="{{ $item->stok }}" required />
+                                                        <input class="form-control" type="text" id="stok{{ $item->id }}" name="stok" value="{{ $item->stok }}" @if ($item->jenis_pesanan != 'preorder') required @endif />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label>Jenis Pesanan</label>
