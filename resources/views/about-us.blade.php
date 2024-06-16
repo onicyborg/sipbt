@@ -9,6 +9,12 @@
                     bibit tanaman di pembibitan Republik Bibit ini dilakukan dengan teknik tertentu agar menghasilkan bibit
                     tanaman yang berkualitas dan siap tanam di lahan yang luas.</p>
             </div>
+
+            @php
+                $directory = 'storage/images';
+                $images = glob($directory . "/*", GLOB_BRACE);
+            @endphp
+
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-5">
                     <div class="box_about">
@@ -21,8 +27,26 @@
                     </div>
                 </div>
                 <div class="col-lg-5 pl-lg-5 text-center d-none d-lg-block">
-                    <img src="{{ asset('assetss/img/about_1.svg') }}" alt="" class="img-fluid" width="350"
-                        height="268">
+                    <div id="carouselImages" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <?php foreach ($images as $index => $image): ?>
+                            <div class="carousel-item <?php if ($index == 0) {
+                                echo 'active';
+                            } ?>">
+                                <img src="{{ asset($image) }}" class="d-block w-100 img-fluid"
+                                    alt="Image <?php echo $index + 1; ?>" width="350" height="268">
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselImages" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselImages" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

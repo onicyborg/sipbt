@@ -55,19 +55,13 @@ class PelangganController extends Controller
         $harga = $product->harga;
 
         if ($product->jenis_pesanan == 'ready') {
-            $minimalJumlah = 1;
             $ongkir = 50000;
         } else {
-            $minimalJumlah = 400;
             if ($request->lokasi == 'dalam') {
                 $ongkir = 100000;
             } else {
                 $ongkir = 150000;
             }
-        }
-
-        if ($jumlah < $minimalJumlah) {
-            return redirect('/pelanggan/order')->withErrors(['jumlah' => 'Jumlah minimal untuk produk ini adalah ' . $minimalJumlah]);
         }
 
         $total = ($harga * $jumlah) + ($request->delivery_option == 'ambil' ? 0 : $ongkir);
