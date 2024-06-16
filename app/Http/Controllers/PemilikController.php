@@ -117,7 +117,7 @@ class PemilikController extends Controller
 
         $product->save();
 
-        return redirect('/pemilik/product')->with('success', 'Produk Bibit berhasil ditambahkan.');
+        return redirect('/pemilik/produk-bibit')->with('success', 'Produk Bibit berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
