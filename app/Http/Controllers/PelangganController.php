@@ -17,6 +17,7 @@ class PelangganController extends Controller
     {
         $best_product = Product::where('display', 'Tampilkan')->withSum('SalesProduct', 'jumlah')
             ->orderBy('sales_product_sum_jumlah', 'desc')
+            ->where('stok', '>', 0)
             ->take(4)
             ->get();
 
