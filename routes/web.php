@@ -28,9 +28,7 @@ Route::get('/', function(){
             ->get();
     return view('welcome', ['menu' => 'home', 'best_produk' => $best_product]);
 });
-Route::get('/about-us', function(){
-    return view('about-us', ['menu' => 'tentang-kami']);
-});
+Route::get('/about-us', [PelangganController::class, 'about_us']);
 Route::get('/registrasi', function(){
     return view('registrasi', ['menu' => 'registrasi']);
 });

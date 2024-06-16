@@ -24,6 +24,17 @@ class PelangganController extends Controller
         return view('pelanggan.index', ['menu' => 'home', 'best_produk' => $best_product]);
     }
 
+    public function about_us()
+    {
+        $best_product = Product::where('display', 'Tampilkan')->withSum('SalesProduct', 'jumlah')
+            ->orderBy('sales_product_sum_jumlah', 'desc')
+            ->where('stok', '>', 0)
+            ->take(4)
+            ->get();
+
+        return view('about-us', ['menu' => 'tentang-kami', 'best_produk' => $best_product]);
+    }
+
     public function order()
     {
         $product = Product::where('display', 'Tampilkan')->where('stok', '>', 0)->get();

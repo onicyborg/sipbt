@@ -10,11 +10,6 @@
                     tanaman yang berkualitas dan siap tanam di lahan yang luas.</p>
             </div>
 
-            @php
-                $directory = 'storage/images';
-                $images = glob($directory . "/*", GLOB_BRACE);
-            @endphp
-
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-5">
                     <div class="box_about">
@@ -29,11 +24,11 @@
                 <div class="col-lg-5 pl-lg-5 text-center d-none d-lg-block">
                     <div id="carouselImages" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                            <?php foreach ($images as $index => $image): ?>
+                            <?php foreach ($best_produk as $index => $item): ?>
                             <div class="carousel-item <?php if ($index == 0) {
                                 echo 'active';
                             } ?>">
-                                <img src="{{ asset($image) }}" class="d-block w-100 img-fluid"
+                                <img src="{{ asset('/storage/images/'.$item->image) }}" class="d-block w-100 img-fluid"
                                     alt="Image <?php echo $index + 1; ?>" width="350" height="268">
                             </div>
                             <?php endforeach; ?>
