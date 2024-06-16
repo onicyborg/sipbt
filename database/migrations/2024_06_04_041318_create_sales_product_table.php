@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status_pesanan', ['Pending', 'Proses Penanaman', 'Siap Kirim / Siap Diambil', 'Dikirim / Diambil']);
             $table->date('tanggal_penanaman')->nullable();
             $table->text('alamat_pengiriman')->default('Ambil Ditempat');
+            $table->string('lokasi')->nullable();
             $table->unsignedBigInteger('ongkir')->nullable();
             $table->unsignedBigInteger('total_keseluruhan')->nullable();
             $table->enum('metode_pembayaran', ['Transfer', 'COD']);

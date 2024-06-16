@@ -46,7 +46,13 @@
                                     <td>{{ $item->kode }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>Rp. {{ number_format($item->harga) }}</td>
-                                    <td>{{ $item->stok }}</td>
+                                    <td>
+                                        @if ($item->stok == null)
+                                            <span>&#8734;</span> <!-- Simbol tak terbatas (unlimited) -->
+                                        @else
+                                            {{ $item->stok }}
+                                        @endif
+                                    </td>
                                     <td>
                                         <img src="{{ asset('storage/images/' . $item->image) }}" alt="Gambar Produk"
                                             class="img-thumbnail" style="width: 100px; height: auto;">

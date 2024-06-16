@@ -66,14 +66,32 @@
                             </select>
                         </div>
                         <div class="mb-3" id="alamat_div">
-                            <label for="alamat">Alamat Pengiriman</label>
+                            <label for="alamat">Alamat Lengkap Pengiriman</label>
                             <textarea class="form-control" id="alamat" name="alamat" placeholder="Isikan Alamat Pengiriman"></textarea>
                         </div>
                         <div class="mb-3" id="lokasi_div">
-                            <label for="lokasi">Lokasi</label>
+                            <label for="lokasi">Kecamatan</label>
                             <select class="form-control" id="lokasi" name="lokasi">
-                                <option value="dalam">Dalam Kecamatan Kertosono</option>
-                                <option value="luar">Luar Kecamatan Kertosono</option>
+                                <option value="Bagor">Bagor</option>
+                                <option value="Baron">Baron</option>
+                                <option value="Berbek">Berbek</option>
+                                <option value="Gondang">Gondang</option>
+                                <option value="Jatikalen">Jatikalen</option>
+                                <option value="Kertosono">Kertosono</option>
+                                <option value="Lengkong">Lengkong</option>
+                                <option value="Loceret">Loceret</option>
+                                <option value="Nganjuk">Nganjuk</option>
+                                <option value="Ngetos">Ngetos</option>
+                                <option value="Ngluyu">Ngluyu</option>
+                                <option value="Ngronggot">Ngronggot</option>
+                                <option value="Pace">Pace</option>
+                                <option value="Patianrowo">Patianrowo</option>
+                                <option value="Prambon">Prambon</option>
+                                <option value="Rejoso">Rejoso</option>
+                                <option value="Sawahan">Sawahan</option>
+                                <option value="Sukomoro">Sukomoro</option>
+                                <option value="Tanjunganom">Tanjunganom</option>
+                                <option value="Wilangan">Wilangan</option>
                             </select>
                         </div>
                         <div class="mb-3" id="ongkir_div">
@@ -93,8 +111,8 @@
                             </select>
                         </div>
                         <div class="form-floating mb-3">
-                            <button class="btn btn-primary" type="submit"><i class="fa-solid fa-shopping-cart"></i> Pesan
-                                Sekarang</button>
+                            <button class="btn btn-primary" type="submit"><i class="fa-solid fa-shopping-cart"></i>
+                                Pesan Sekarang</button>
                         </div>
                     </form>
                 </div>
@@ -120,6 +138,7 @@
             const ongkirInput = document.getElementById('ongkir');
             const totalInput = document.getElementById('total');
             const harga = parseInt(document.getElementById('harga').value);
+            const lokasiSelect = document.getElementById('lokasi');
 
             const luasLahanDiv = document.getElementById('luas_lahan_div');
             const satuanLuasDiv = document.getElementById('satuan_luas_div');
@@ -147,8 +166,8 @@
                     if (jenisPesanan === 'ready') {
                         ongkirInput.value = 50000;
                     } else {
-                        const lokasi = document.getElementById('lokasi').value;
-                        if (lokasi === 'dalam') {
+                        const lokasi = lokasiSelect.value;
+                        if (lokasi === 'Kertosono') {
                             ongkirInput.value = 100000;
                         } else {
                             ongkirInput.value = 150000;
@@ -186,7 +205,7 @@
                 const satuan = satuanLuasSelect.value;
                 const luasLahan = parseInt(luasLahanSelect.value);
                 const jarakTanam =
-                50; // Contoh nilai jarak tanam, ini bisa diambil dari properti produk atau input lainnya
+                    50; // Contoh nilai jarak tanam, ini bisa diambil dari properti produk atau input lainnya
                 let jumlah = 0;
 
                 const conversionData = {
@@ -294,7 +313,7 @@
 
             jumlahInput.addEventListener('input', calculateTotal);
             deliveryOption.addEventListener('change', updateOngkir);
-            document.getElementById('lokasi').addEventListener('change', updateOngkir);
+            lokasiSelect.addEventListener('change', updateOngkir);
 
             // Initialize fields based on the default delivery option
             updateOngkir();

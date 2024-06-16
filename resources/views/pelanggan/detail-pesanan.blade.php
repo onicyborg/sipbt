@@ -10,6 +10,52 @@
         <!-- Status Pesanan -->
         <div class="card mb-4">
             <div class="card-header">
+                Detail Pesanan Bibit
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Gambar Produk -->
+                    <div class="col-md-6">
+                        <img src="{{ asset('storage/images/' . $order->product->image) }}" alt="Gambar Produk"
+                            class="img-fluid img-thumbnail">
+                    </div>
+                    <!-- Detail Produk -->
+                    <div class="col-md-6">
+                        <h2>{{ $order->product->nama }}</h2>
+                        <p><strong>Kode:</strong> {{ $order->product->kode }}</p>
+                        <p><strong>Detail:</strong> {{ $order->product->detail }}</p>
+                        <p><strong>Tanggal Penanaman:</strong>
+                            @if ($order->tanggal_penanaman != null)
+                                {{ $order->penanaman }}
+                            @else
+                                -
+                            @endif
+                        </p>
+                        <p><strong>Harga Satuan:</strong> Rp. {{ number_format($order->product->harga) }}</p>
+                        <p><strong>Jumlah Pembelian:</strong> {{ $order->jumlah }}</p>
+                        <p><strong>Ongkir:</strong>
+                            @if ($order->ongkir == null)
+                                -
+                            @else
+                                Rp. {{ number_format($order->ongkir) }}
+                            @endif
+                        </p>
+                        <p><strong>Total Pembayaran:</strong> Rp. {{ number_format($order->total_keseluruhan) }}</p>
+                        <p><strong>Metode Pembayaran:</strong> {{ $order->metode_pembayaran }}</p>
+                        @if ($order->bukti_transfer != null)
+                            <p><strong>Status Pembayaran:</strong> {{ $order->bukti_transfer->status }}</p>
+                        @endif
+                        @if ($order->lokasi != null)
+                            <p><strong>Lokasi:</strong> {{ $order->lokasi }}</p>
+                            <p><strong>Alamat Lengkap Pengantaran:</strong> {{ $order->alamat_pengiriman }}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
                 Status Pesanan
             </div>
             <div class="card-body">

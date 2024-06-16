@@ -69,12 +69,12 @@ class PemilikController extends Controller
             'nama' => 'required|string|max:255',
             'detail' => 'required|string',
             'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
 
         if ($request->jenis_pesanan == 'ready') {
             $rules['tanggal_tanam'] = 'required|date';
+            $rules['stok'] = 'required|min:0';
         } else if ($request->jenis_pesanan == 'preorder') {
             $rules['jarak_tanam'] = 'required|in:50,60';
         }
@@ -95,7 +95,9 @@ class PemilikController extends Controller
         $product->nama = $validatedData['nama'];
         $product->detail = $validatedData['detail'];
         $product->harga = $validatedData['harga'];
-        $product->stok = $validatedData['stok'];
+        if($request->jenis_pesanan == 'ready'){
+            $product->stok = $request->stok;
+        }
         $product->jenis_pesanan = $request->jenis_pesanan;
 
         // Handle the image upload
@@ -128,7 +130,6 @@ class PemilikController extends Controller
             'nama' => 'required|string|max:255',
             'detail' => 'required|string',
             'harga' => 'required|numeric',
-            'stok' => 'required|integer',
             'jenis_pesanan' => 'required|in:preorder,ready',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'display' => 'required'
@@ -136,6 +137,7 @@ class PemilikController extends Controller
 
         if ($request->jenis_pesanan == 'ready') {
             $rules['tanggal_tanam'] = 'required|date';
+            $rules['stok'] = 'required';
         } else if ($request->jenis_pesanan == 'preorder') {
             $rules['jarak_tanam'] = 'required|in:50,60';
         }
@@ -157,16 +159,17 @@ class PemilikController extends Controller
         $product->nama = $request->nama;
         $product->detail = $request->detail;
         $product->harga = $request->harga;
-        $product->stok = $request->stok;
         $product->jenis_pesanan = $request->jenis_pesanan;
         $product->display = $request->display;
 
         if ($request->jenis_pesanan == 'ready') {
             $product->tanggal_tanam = $request->tanggal_tanam;
             $product->jarak_tanam = null;
+            $product->stok = $request->stok;
         } else if ($request->jenis_pesanan == 'preorder') {
             $product->tanggal_tanam = null;
             $product->jarak_tanam = $request->jarak_tanam;
+            $product->stok = null;
         }
 
         // Proses upload gambar
@@ -202,7 +205,7 @@ class PemilikController extends Controller
             $query->whereBetween('created_at', [$start_date, $end_date]);
         }
 
-        $orders = $query->with('product')->get();
+        $orders = $query->where('status_pesanan', 'Dikirim / Diambil')->with('product')->get();
 
         return view('pemilik.laporan-penjualan', [
             'orders' => $orders,

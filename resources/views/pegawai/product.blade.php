@@ -53,7 +53,13 @@
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->detail }}</td>
                                     <td>Rp. {{ number_format($item->harga) }}</td>
-                                    <td>{{ $item->stok }}</td>
+                                    <td>
+                                        @if ($item->stok == null)
+                                            <span>&#8734;</span> <!-- Simbol tak terbatas (unlimited) -->
+                                        @else
+                                            {{ $item->stok }}
+                                        @endif
+                                    </td>
                                     <td>
                                         <img src="{{ asset('storage/images/' . $item->image) }}" alt="Gambar Produk"
                                             class="img-thumbnail" style="width: 100px; height: auto;">
@@ -110,9 +116,9 @@
                                                         <input class="form-control" type="text" name="harga"
                                                             value="{{ $item->harga }}" required />
                                                     </div>
-                                                    <div class="mb-3">
+                                                    <div class="mb-3" id="stokDiv{{ $item->id }}">
                                                         <label>Stok</label>
-                                                        <input class="form-control" type="text" name="stok"
+                                                        <input class="form-control" type="text" id="stok{{ $item->id }}" name="stok"
                                                             value="{{ $item->stok }}" required />
                                                     </div>
                                                     <div class="mb-3">
@@ -259,17 +265,23 @@
             const tanggalTanam = document.getElementById('tanggalTanam' + id);
             const jarakTanamDiv = document.getElementById('jarakTanamDiv' + id);
             const jarakTanam = document.getElementById('jarak_tanam' + id);
+            const Stok = document.getElementById('stok' + id)
+            const StokDiv = document.getElementById('stokDiv' + id)
 
             if (jenisPesanan === 'ready') {
                 tanggalTanamDiv.style.display = 'block';
                 tanggalTanam.required = true;
                 jarakTanamDiv.style.display = 'none';
                 jarakTanam.required = false;
+                Stok.required = true;
+                StokDiv.style.display = 'block';
             } else {
                 tanggalTanamDiv.style.display = 'none';
                 tanggalTanam.required = false;
                 jarakTanamDiv.style.display = 'block';
                 jarakTanam.required = true;
+                Stok.required = false;
+                StokDiv.style.display = 'none';
             }
         }
     </script>

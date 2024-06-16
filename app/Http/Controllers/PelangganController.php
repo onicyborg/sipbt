@@ -15,20 +15,29 @@ class PelangganController extends Controller
 {
     public function index()
     {
-        $best_product = Product::where('display', 'Tampilkan')->withSum('SalesProduct', 'jumlah')
+        $best_product = Product::where('display', 'Tampilkan')
+            ->withSum('SalesProduct', 'jumlah')
             ->orderBy('sales_product_sum_jumlah', 'desc')
-            ->where('stok', '>', 0)
+            ->where(function ($query) {
+                $query->where('stok', '>', 0)
+                    ->orWhereNull('stok');
+            })
             ->take(4)
             ->get();
+
 
         return view('pelanggan.index', ['menu' => 'home', 'best_produk' => $best_product]);
     }
 
     public function about_us()
     {
-        $best_product = Product::where('display', 'Tampilkan')->withSum('SalesProduct', 'jumlah')
+        $best_product = Product::where('display', 'Tampilkan')
+            ->withSum('SalesProduct', 'jumlah')
             ->orderBy('sales_product_sum_jumlah', 'desc')
-            ->where('stok', '>', 0)
+            ->where(function ($query) {
+                $query->where('stok', '>', 0)
+                    ->orWhereNull('stok');
+            })
             ->take(4)
             ->get();
 
@@ -37,7 +46,14 @@ class PelangganController extends Controller
 
     public function order()
     {
-        $product = Product::where('display', 'Tampilkan')->where('stok', '>', 0)->get();
+        $product = Product::where('display', 'Tampilkan')
+            ->withSum('SalesProduct', 'jumlah')
+            ->orderBy('sales_product_sum_jumlah', 'desc')
+            ->where(function ($query) {
+                $query->where('stok', '>', 0)
+                    ->orWhereNull('stok');
+            })
+            ->get();
 
         return view('pelanggan.order', ['menu' => 'order', 'product' => $product]);
     }
@@ -56,11 +72,20 @@ class PelangganController extends Controller
         $request->validate([
             'product_id' => 'required|exists:product,id',
             'delivery_option' => 'required|in:antar,ambil',
-            'jumlah' => 'required|integer|min:1|max:' . $product->stok,
+            'jumlah' => [
+                'required',
+                'integer',
+                'min:1',
+                function ($attribute, $value, $fail) use ($product) {
+                    if ($product->stok !== null && $value > $product->stok) {
+                        $fail('The ' . $attribute . ' may not be greater than ' . $product->stok . '.');
+                    }
+                },
+            ],
             'luas_lahan' => 'required_if:jenis_pesanan,preorder|integer',
             'satuan_luas' => 'required_if:jenis_pesanan,preorder|in:hektar,m2',
             'alamat' => 'required_if:delivery_option,antar',
-            'lokasi' => 'required_if:delivery_option,antar|in:dalam,luar',
+            'lokasi' => 'required_if:delivery_option,antar|in:Bagor,Baron,Berbek,Gondang,Jatikalen,Kertosono,Lengkong,Loceret,Nganjuk,Ngetos,Ngluyu,Ngronggot,Pace,Patianrowo,Prambon,Rejoso,Sawahan,Sukomoro,Tanjunganom,Wilangan',
         ]);
 
         $jumlah = $request->jumlah;
@@ -69,7 +94,7 @@ class PelangganController extends Controller
         if ($product->jenis_pesanan == 'ready') {
             $ongkir = 50000;
         } else {
-            if ($request->lokasi == 'dalam') {
+            if ($request->lokasi == 'Kertosono') {
                 $ongkir = 100000;
             } else {
                 $ongkir = 150000;
@@ -81,12 +106,14 @@ class PelangganController extends Controller
         $order = new SalesProduct();
         $order->user_id = Auth::id();
         $order->product_id = $request->product_id;
+
         if ($request->delivery_option != 'ambil') {
             $order->alamat_pengiriman = $request->alamat;
+            $order->lokasi = $request->lokasi; // Tambahkan lokasi ke order
             $order->ongkir = $ongkir;
         }
 
-        $order->status_pesanan = 'Pending'; //disini
+        $order->status_pesanan = 'Pending';
 
         if ($product->tanggal_tanam != null) {
             $order->tanggal_penanaman = $product->tanggal_tanam;
@@ -97,8 +124,10 @@ class PelangganController extends Controller
         $order->metode_pembayaran = $request->metode_pembayaran;
         $order->save();
 
-        $product->stok = ($product->stok - $jumlah);
-        $product->save();
+        if ($product->jenis_pesanan == 'ready') {
+            $product->stok = ($product->stok - $jumlah);
+            $product->save();
+        }
 
         if ($request->metode_pembayaran == 'Transfer') {
             $bukti_transfer = new BuktiTransfer();
@@ -106,9 +135,9 @@ class PelangganController extends Controller
             $bukti_transfer->sales_product_id = $order->id;
             $bukti_transfer->save();
         }
+
         return redirect('/pelanggan/order')->with('success', 'Order berhasil dibuat!');
     }
-
 
 
     public function pesanan_index()

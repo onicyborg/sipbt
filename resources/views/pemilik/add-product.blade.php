@@ -48,11 +48,6 @@
                                     placeholder="Isikan Harga Bibit" required />
                             </div>
                             <div class="mb-3">
-                                <label for="stok_preorder" class="form-label">Stok</label>
-                                <input class="form-control" id="stok_preorder" type="text" name="stok"
-                                    placeholder="Isikan Stok Bibit" required />
-                            </div>
-                            <div class="mb-3">
                                 <label for="jarak_tanam_preorder" class="form-label">Jarak Tanam (cm)</label>
                                 <select class="form-control" id="jarak_tanam_preorder" name="jarak_tanam" required>
                                     <option value="50">50 cm</option>

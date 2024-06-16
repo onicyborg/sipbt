@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->text('detail');
             $table->unsignedBigInteger('harga');
-            $table->integer('stok');
+            $table->integer('stok')->nullable();
             $table->string('image');
             $table->enum('jenis_pesanan', ['preorder', 'ready']);
             $table->date('tanggal_tanam')->nullable();
